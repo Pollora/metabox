@@ -84,3 +84,18 @@ test('every documented method exists', function () {
 
     expect($unknown)->toBe([]);
 });
+
+test('every field is in the field list', function () {
+    $list = file_get_contents(dirname(__DIR__).'/docs/field-list.md');
+    $missing = [];
+
+    foreach (glob(dirname(__DIR__).'/src/Fields/*.php') as $file) {
+        $class = 'Pollora\\Metabox\\Fields\\'.basename($file, '.php');
+
+        if (class_exists($class) && ! (new ReflectionClass($class))->isAbstract() && ! str_contains($list, '[`'.basename($file, '.php').'`]')) {
+            $missing[] = basename($file, '.php');
+        }
+    }
+
+    expect($missing)->toBe([]);
+});

@@ -184,6 +184,7 @@ add_filter('rwmb_meta_boxes', function (array $metaBoxes): array {
 
 - [Field groups](docs/field-groups.md): creating field groups and choosing where they are displayed.
 - [Common field settings](docs/common-settings.md): the settings shared by every field.
+- [Field list](docs/field-list.md): every field on one page, with its Meta Box type.
 - [Basic fields](docs/basic-fields.md): text, textarea, select, checkbox, radio…
 - [Advanced fields](docs/advanced-fields.md): autocomplete, color, date and time pickers, maps, sliders, WYSIWYG…
 - [HTML5 fields](docs/html5-fields.md): email, number, range, URL.

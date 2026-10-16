@@ -71,4 +71,4 @@ Conditional logic, columns, tooltips, admin columns, text limits, geolocation an
 ---
 
 **Previous:** [Field groups](field-groups.md)  
-**Next:** [Basic fields](basic-fields.md)
+**Next:** [Field list](field-list.md)

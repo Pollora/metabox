@@ -198,5 +198,5 @@ Radio::make('Gender', 'gender')
 
 ---
 
-**Previous:** [Common field settings](common-settings.md)  
+**Previous:** [Field list](field-list.md)  
 **Next:** [Advanced fields](advanced-fields.md)
