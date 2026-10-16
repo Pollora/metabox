@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Pollora\Metabox\Block;
 use Pollora\Metabox\Enums\Context;
 use Pollora\Metabox\Enums\TextareaWrap;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Backup;
 use Pollora\Metabox\Fields\CheckboxList;
 use Pollora\Metabox\Fields\Column;
@@ -27,25 +28,24 @@ use Pollora\Metabox\Fields\Timepicker;
 use Pollora\Metabox\Fields\User;
 use Pollora\Metabox\Fields\Wysiwyg;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\SettingsPage;
 
 describe('geolocation', function () {
     test('is enabled without settings', function () {
-        expect(Metabox::make('Address', 'address')->geolocation()->build())->toHaveKey('geo', true);
+        expect(FieldGroup::make('Address', 'address')->geolocation()->build())->toHaveKey('geo', true);
     });
 
     test('passes the Google Maps settings', function () {
-        expect(Metabox::make('Address', 'address')->geolocation(apiKey: 'KEY', types: ['(cities)'], countries: 'FR')->build()['geo'])
+        expect(FieldGroup::make('Address', 'address')->geolocation(apiKey: 'KEY', types: ['(cities)'], countries: 'FR')->build()['geo'])
             ->toBe(['api_key' => 'KEY', 'types' => ['(cities)'], 'componentRestrictions' => ['country' => 'fr']])
-            ->and(Metabox::make('Address', 'address')->geolocation(countries: ['fr', 'be'])->build()['geo'])
+            ->and(FieldGroup::make('Address', 'address')->geolocation(countries: ['fr', 'be'])->build()['geo'])
             ->toBe(['componentRestrictions' => ['country' => ['fr', 'be']]]);
     });
 
     test('rejects invalid countries and types', function () {
-        expect(fn () => Metabox::make('A', 'a')->geolocation(countries: 'France'))->toThrow(InvalidArgumentException::class)
-            ->and(fn () => Metabox::make('A', 'a')->geolocation(countries: ['fr', 'be', 'de', 'it', 'es', 'pt']))->toThrow(InvalidArgumentException::class)
-            ->and(fn () => Metabox::make('A', 'a')->geolocation(types: ['']))->toThrow(InvalidArgumentException::class);
+        expect(fn () => FieldGroup::make('A', 'a')->geolocation(countries: 'France'))->toThrow(InvalidArgumentException::class)
+            ->and(fn () => FieldGroup::make('A', 'a')->geolocation(countries: ['fr', 'be', 'de', 'it', 'es', 'pt']))->toThrow(InvalidArgumentException::class)
+            ->and(fn () => FieldGroup::make('A', 'a')->geolocation(types: ['']))->toThrow(InvalidArgumentException::class);
     });
 
     test('binds fields to address components', function () {
@@ -73,7 +73,7 @@ test('seoAnalysis() adds the field to the Yoast SEO and Rank Math analysis', fun
 
 describe('columns', function () {
     test('group several fields in a column', function () {
-        $metabox = Metabox::make('Contact', 'contact')->fields([
+        $metabox = FieldGroup::make('Contact', 'contact')->fields([
             Column::make(4)->fields([Text::make('Name', 'name'), Email::make('Email', 'email')]),
             Column::make(8)->class('highlight')->fields([Textarea::make('Message', 'message'), Divider::make()]),
             Text::make('Notes', 'notes')->columns(6),
@@ -86,7 +86,7 @@ describe('columns', function () {
     });
 
     test('work in tabs', function () {
-        $metabox = Metabox::make('Contact', 'contact')->fields([
+        $metabox = FieldGroup::make('Contact', 'contact')->fields([
             Tab::make('General', 'general')->fields([
                 Column::make(6)->fields([Text::make('Name', 'name')]),
                 Column::make(6)->fields([Text::make('Phone', 'phone')]),
@@ -106,17 +106,17 @@ describe('columns', function () {
 
 describe('customizer', function () {
     test('displays a meta box as a top-level section or in a panel', function () {
-        expect(Metabox::make('General', 'general')->customizer()->priority(30)->build())
+        expect(FieldGroup::make('General', 'general')->customizer()->priority(30)->build())
             ->toMatchArray(['panel' => '', 'priority' => 30])
             ->not->toHaveKey('post_types')
-            ->and(Metabox::make('General', 'general')->customizer('theme_panel', optionName: 'footer')->build())
+            ->and(FieldGroup::make('General', 'general')->customizer('theme_panel', optionName: 'footer')->build())
             ->toMatchArray(['panel' => 'theme_panel', 'option_name' => 'footer']);
     });
 
     test('accepts an integer priority on settings pages only', function () {
-        expect(Metabox::make('General', 'general')->location(Location::settingsPages('theme'))->priority(10)->build())
+        expect(FieldGroup::make('General', 'general')->location(Location::settingsPages('theme'))->priority(10)->build())
             ->toHaveKey('priority', 10)
-            ->and(fn () => Metabox::make('General', 'general')->priority(10)->build())->toThrow(LogicException::class);
+            ->and(fn () => FieldGroup::make('General', 'general')->priority(10)->build())->toThrow(LogicException::class);
     });
 });
 
@@ -243,7 +243,7 @@ describe('settings page tabs', function () {
 });
 
 test('context() accepts the Context enum', function () {
-    expect(Metabox::make('Side', 'side')->context(Context::Side)->build())->toHaveKey('context', 'side');
+    expect(FieldGroup::make('Side', 'side')->context(Context::Side)->build())->toHaveKey('context', 'side');
 });
 
 test('Range fields have no input tooltip', function () {

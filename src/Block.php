@@ -12,7 +12,7 @@ use Pollora\Metabox\Validation\OptionValidation;
 /**
  * Class for creating Gutenberg blocks.
  */
-class Block extends Metabox
+class Block extends FieldGroup
 {
     /**
      * The block type.

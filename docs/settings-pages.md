@@ -47,7 +47,7 @@ SettingsPage::make('Theme Options', 'theme-options')
 
 - **`capability(string $capability)`**: Sets the required capability to access the page.
 - **`class(string $class)`**: Adds a custom CSS class.
-- **`style(string|SettingsPageStyle $style)`**: Sets the page style: `boxes` (default, each meta box is a box) or `no-boxes` (each meta box is a section, like the WordPress settings pages).
+- **`style(string|SettingsPageStyle $style)`**: Sets the page style: `boxes` (default, each field group is a box) or `no-boxes` (each field group is a section, like the WordPress settings pages).
 - **`columns(int $columns)`**: Sets the number of columns: `1` (default) or `2`. See [Defaults that differ from Meta Box](#defaults-that-differ-from-meta-box).
 
 #### Tabs Configuration
@@ -114,7 +114,7 @@ SettingsPage::make('Advanced Options', 'advanced-options')
     ->tabStyle(TabStyle::LEFT)
     ->columns(2);
 
-Metabox::make('Colors', 'colors')
+FieldGroup::make('Colors', 'colors')
     ->location(Location::settingsPages('advanced-options', tab: 'appearance'))
     ->fields([
         Color::make('Text color', 'text_color'),
@@ -123,12 +123,12 @@ Metabox::make('Colors', 'colors')
 
 ### Backup and restore
 
-A `Backup` field shows the values of the settings page as JSON. Copy them to back up the settings; paste a backup and save the page to restore them. It only works in a meta box displayed on a settings page.
+A `Backup` field shows the values of the settings page as JSON. Copy them to back up the settings; paste a backup and save the page to restore them. It only works in a field group displayed on a settings page.
 
 ```php
 use Pollora\Metabox\Fields\Backup;
 
-Metabox::make('Backup', 'backup')
+FieldGroup::make('Backup', 'backup')
     ->location(Location::settingsPages('advanced-options', tab: 'advanced'))
     ->fields([
         Backup::make(),
@@ -146,21 +146,21 @@ SettingsPage::make('Customizer Options', 'customizer-options')
     ->optionName('my_theme_options');
 ```
 
-Each meta box of the page becomes a section of the Customizer. An integer `priority()` on the meta box sets the position of the section.
+Each field group of the page becomes a section of the Customizer. An integer `priority()` on the field group sets the position of the section.
 
 ### Customizer sections without a settings page
 
-A meta box can be a Customizer section on its own, without a settings page: its values are saved in the theme mods of the active theme, or in the option given with `optionName`.
+A field group can be a Customizer section on its own, without a settings page: its values are saved in the theme mods of the active theme, or in the option given with `optionName`.
 
 ```php
-Metabox::make('Header', 'header')
+FieldGroup::make('Header', 'header')
     ->customizer()               // a top-level section
     ->priority(30)
     ->fields([
         FileInput::make('Logo', 'logo'),
     ]);
 
-Metabox::make('Footer', 'footer')
+FieldGroup::make('Footer', 'footer')
     ->customizer(panel: 'theme_options', optionName: 'footer_settings'); // in the panel 'theme_options'
 ```
 
@@ -168,7 +168,7 @@ Metabox::make('Footer', 'footer')
 
 ## Defaults that differ from Meta Box
 
-A settings page has **one column** by default: the meta boxes take the full width and the save button is below them. MB Settings Page defaults to two columns, with a sidebar holding the save button.
+A settings page has **one column** by default: the field groups take the full width and the save button is below them. MB Settings Page defaults to two columns, with a sidebar holding the save button.
 
 The package keeps one column on purpose: changing it would change the layout of the existing settings pages. To get the Meta Box layout, call `columns(2)`:
 
@@ -177,7 +177,7 @@ SettingsPage::make('Theme Options', 'theme-options')
     ->columns(2);
 ```
 
-With two columns, a meta box registered with `->context('side')` is displayed in the sidebar, under the save button.
+With two columns, a field group registered with `->context('side')` is displayed in the sidebar, under the save button.
 
 ## Custom Settings
 

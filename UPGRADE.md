@@ -1,5 +1,32 @@
 # Upgrade guide
 
+## From pollora/metabox 2.6 to 3.0
+
+The `Metabox` class is now `FieldGroup`, the name MB Builder and ACF give to a set of fields: on a post edit screen it is displayed as a meta box, elsewhere as a section. Its methods are unchanged. `Block` now extends `FieldGroup`.
+
+| Before | After |
+|---|---|
+| `use Pollora\Metabox\Metabox;` | `use Pollora\Metabox\FieldGroup;` |
+| `Metabox::make('Event', 'event')` | `FieldGroup::make('Event', 'event')` |
+| `function (Metabox $metabox)` | `function (FieldGroup $metabox)` |
+| `$box instanceof Metabox` | `$box instanceof FieldGroup` |
+
+`MetaboxModel`, `SettingsPage`, `Block`, `Location` and the `Pollora\Metabox` namespace keep their names.
+
+Rename the class in the files importing it. Run this from the project root, on the directories that hold your code:
+
+```bash
+grep -rlE 'Pollora\\+Metabox\\+Metabox\b' app config --include='*.php' \
+  | xargs sed -i -E 's/\bMetabox\b([^\\]|$)/FieldGroup\1/g'
+```
+
+On macOS, use `sed -i ''` instead of `sed -i`. The command only changes `Metabox` when it is not followed by a backslash, so the `Pollora\Metabox` namespace and `MetaboxModel` are kept. Then run your code formatter, since the `use` statements may no longer be sorted, and check that nothing is left:
+
+```bash
+# This must print nothing
+grep -rnE 'Pollora\\+Metabox\\+Metabox\b' app config --include='*.php'
+```
+
 ## From pollora/metabox 2.5 to 2.6
 
 `customTable()` now adds the WordPress table prefix to the table name, like a Laravel database connection: `customTable('events')` stores the values in `wp_events`. Check every call:
@@ -137,9 +164,9 @@ Block::make('Hero', 'hero')->mode('preview');
 
 Nothing else needs to change: 2.1 only adds methods and fields.
 
-## From amphibee/metabox-maker 1.x to pollora/metabox 2.x
+## From amphibee/metabox-maker 1.x to pollora/metabox 3.x
 
-`amphibee/metabox-maker` is now `pollora/metabox`, and the `AmphiBee\MetaboxMaker` namespace is now `Pollora\Metabox`. Version 2.0 has no compatibility layer: the former names no longer exist, so every reference must be renamed. The package API is otherwise unchanged, apart from the few removals listed in step 4.
+`amphibee/metabox-maker` is now `pollora/metabox`, and the `AmphiBee\MetaboxMaker` namespace is now `Pollora\Metabox`. Version 2.0 has no compatibility layer: the former names no longer exist, so every reference must be renamed. The package API is otherwise unchanged, apart from the `Metabox` class, renamed `FieldGroup` in 3.0 (step 3), and the few removals listed in step 4.
 
 `amphibee/metabox-maker` is abandoned and stays at 1.0.0. A project not migrated yet keeps working on `^1.0`.
 
@@ -152,7 +179,7 @@ Nothing else needs to change: 2.1 only adds methods and fields.
 
 ```bash
 composer remove amphibee/metabox-maker
-composer require pollora/metabox:^2.0
+composer require pollora/metabox:^3.0
 ```
 
 Until step 3 is done, the project fails with `Class "AmphiBee\MetaboxMaker\..." not found`: do both steps together.
@@ -173,12 +200,14 @@ The two expressions cover every form of the name:
 | Before | After |
 |---|---|
 | `use AmphiBee\MetaboxMaker\Fields\Text;` | `use Pollora\Metabox\Fields\Text;` |
-| `\AmphiBee\MetaboxMaker\Metabox::class` | `\Pollora\Metabox\Metabox::class` |
+| `\AmphiBee\MetaboxMaker\SettingsPage::class` | `\Pollora\Metabox\SettingsPage::class` |
 | `'AmphiBee\MetaboxMaker\Location'` | `'Pollora\Metabox\Location'` |
 | `"AmphiBee\\MetaboxMaker\\Block"` | `"Pollora\\Metabox\\Block"` |
 | `@var \AmphiBee\MetaboxMaker\Fields\Group` | `@var \Pollora\Metabox\Fields\Group` |
 
 The `use` statements now start with `Pollora` instead of `AmphiBee`, so they may no longer be sorted: run your code formatter (for instance `vendor/bin/pint`).
+
+Then rename the `Metabox` class to `FieldGroup`, with the command of the [2.6 to 3.0 section](#from-pollorametabox-26-to-30). Run it after the namespace replacement: it only changes the files importing `Pollora\Metabox\Metabox`.
 
 ### 4. Replace the removed methods and classes
 
@@ -205,6 +234,7 @@ grep -rnE "Fields\\\\Fieldset;|Fieldset::make|->setAttributes\(|->taxonomy\(|->m
 ```bash
 # No former name left: this must print nothing
 grep -rnF 'AmphiBee\' app config --include='*.php' | grep MetaboxMaker
+grep -rnE 'Pollora\\+Metabox\\+Metabox\b' app config --include='*.php'
 
 composer dump-autoload
 ```

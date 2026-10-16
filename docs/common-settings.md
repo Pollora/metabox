@@ -70,5 +70,5 @@ Conditional logic, columns, tooltips, admin columns, text limits, geolocation an
 
 ---
 
-**Previous:** [Meta boxes](metaboxes.md)  
+**Previous:** [Field groups](field-groups.md)  
 **Next:** [Basic fields](basic-fields.md)

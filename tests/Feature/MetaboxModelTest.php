@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Pollora\Metabox\Block;
 use Pollora\Metabox\Enums\ModelSupport;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\MetaboxModel;
 
 class EventDetailsModel
@@ -68,8 +68,8 @@ describe('custom models', function () {
 
 describe('custom tables', function () {
     test('are prefixed', function () {
-        expect(Metabox::make('Event', 'event')->customTable('events')->build())->toMatchArray(['storage_type' => 'custom_table', 'table' => 'wp_events'])
-            ->and(Metabox::make('Event', 'event')->customTable('events', prefix: false)->build()['table'])->toBe('events')
+        expect(FieldGroup::make('Event', 'event')->customTable('events')->build())->toMatchArray(['storage_type' => 'custom_table', 'table' => 'wp_events'])
+            ->and(FieldGroup::make('Event', 'event')->customTable('events', prefix: false)->build()['table'])->toBe('events')
             ->and(Block::make('Hero', 'hero')->customTable(EventDetailsModel::class)->build()['table'])->toBe('wp_event_details');
     });
 
@@ -78,10 +78,10 @@ describe('custom tables', function () {
         MetaboxModel::make('refund')->table('orders');
         MetaboxModel::make('ticket')->table('tickets');
 
-        expect(Metabox::make('Order', 'order_details')->location(Location::models(['order', 'refund']))->build())
+        expect(FieldGroup::make('Order', 'order_details')->location(Location::models(['order', 'refund']))->build())
             ->toMatchArray(['storage_type' => 'custom_table', 'table' => 'wp_orders', 'models' => ['order', 'refund']])
-            ->and(fn () => Metabox::make('Mixed', 'mixed')->location(Location::models(['order', 'ticket']))->build())->toThrow(LogicException::class)
-            ->and(fn () => Metabox::make('Unknown', 'unknown')->location(Location::models('unknown'))->build())->toThrow(LogicException::class)
-            ->and(Metabox::make('Unknown', 'unknown')->location(Location::models('unknown'))->customTable('unknowns')->build()['table'])->toBe('wp_unknowns');
+            ->and(fn () => FieldGroup::make('Mixed', 'mixed')->location(Location::models(['order', 'ticket']))->build())->toThrow(LogicException::class)
+            ->and(fn () => FieldGroup::make('Unknown', 'unknown')->location(Location::models('unknown'))->build())->toThrow(LogicException::class)
+            ->and(FieldGroup::make('Unknown', 'unknown')->location(Location::models('unknown'))->customTable('unknowns')->build()['table'])->toBe('wp_unknowns');
     });
 });

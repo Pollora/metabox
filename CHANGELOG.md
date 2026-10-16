@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0 - Unreleased
+
+### Changed
+
+- The `Metabox` class is renamed `FieldGroup`, the name MB Builder and ACF give to a set of fields registered together: it is displayed as a meta box on post edit screens, and as a section on terms, users, settings pages or in the Customizer. Its methods are unchanged, and `Block` now extends `FieldGroup`. See the [upgrade guide](UPGRADE.md#from-pollorametabox-26-to-30).
+- The meta boxes documentation page is now [Field groups](docs/field-groups.md).
+- The upgrade guide from `amphibee/metabox-maker` 1.x targets 3.x and includes the rename.
+
 ## 2.6.0 - 2026-10-07
 
 ### Added

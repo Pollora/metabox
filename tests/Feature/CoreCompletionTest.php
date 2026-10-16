@@ -7,10 +7,10 @@ use Pollora\Metabox\Enums\BlockMode;
 use Pollora\Metabox\Enums\InputTextType;
 use Pollora\Metabox\Enums\TabStyle;
 use Pollora\Metabox\Enums\ToolbarPosition;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\BlockEditor;
 use Pollora\Metabox\Fields\Link;
 use Pollora\Metabox\Fields\Text;
-use Pollora\Metabox\Metabox;
 
 test('block editor field', function () {
     expect(BlockEditor::make('Content', 'content')
@@ -42,7 +42,7 @@ test('text field accepts HTML5 input type enums', function () {
 });
 
 test('meta box tab settings', function () {
-    expect(Metabox::make('Box', 'box')
+    expect(FieldGroup::make('Box', 'box')
         ->tabStyle(TabStyle::BOX)
         ->tabWrapper(false)
         ->tabDefaultActive('general')
@@ -56,7 +56,7 @@ test('meta box tab settings', function () {
 });
 
 test('meta box validation, revision and custom table', function () {
-    $config = Metabox::make('Box', 'box')
+    $config = FieldGroup::make('Box', 'box')
         ->validation(
             ['email' => ['required' => true, 'minlength' => 7]],
             ['email' => ['required' => 'Email is required']],
@@ -77,7 +77,7 @@ test('meta box validation, revision and custom table', function () {
 });
 
 test('validation without messages omits the messages key', function () {
-    expect(Metabox::make('Box', 'box')->validation(['email' => ['required' => true]])->build()['validation'])
+    expect(FieldGroup::make('Box', 'box')->validation(['email' => ['required' => true]])->build()['validation'])
         ->toBe(['rules' => ['email' => ['required' => true]]]);
 });
 

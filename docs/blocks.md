@@ -1,6 +1,6 @@
 # Blocks
 
-The `Block` class extends the `Metabox` class to provide a streamlined way to create custom Gutenberg blocks in WordPress. This guide will walk you through the process of creating a block and adding fields to it.
+The `Block` class extends the `FieldGroup` class to provide a streamlined way to create custom Gutenberg blocks in WordPress. This guide will walk you through the process of creating a block and adding fields to it.
 
 ## Basic Usage
 

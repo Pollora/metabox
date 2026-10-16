@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Group;
 use Pollora\Metabox\Fields\Heading;
 use Pollora\Metabox\Fields\Tab;
 use Pollora\Metabox\Fields\Text;
-use Pollora\Metabox\Metabox;
 
 test('can assign tabs to fields', function () {
-    $tabs = Metabox::make('Multi-level nested groups', 'main_group')
+    $tabs = FieldGroup::make('Multi-level nested groups', 'main_group')
         ->tabs([
             'contact' => 'Contact',
             'social' => [
@@ -66,7 +66,7 @@ test('can assign tabs to fields', function () {
 });
 
 test('can assign group tabs', function () {
-    $tabs = Metabox::make('Multi-level nested groups', 'main_group')
+    $tabs = FieldGroup::make('Multi-level nested groups', 'main_group')
         ->fields([
             Tab::make('Contact', 'contact')
                 ->fields([
@@ -125,7 +125,7 @@ test('can assign group tabs', function () {
 });
 
 test('tab accepts layout fields and assigns them to the tab', function () {
-    $config = Metabox::make('Box', 'box')->fields([
+    $config = FieldGroup::make('Box', 'box')->fields([
         Tab::make('General', 'general')->fields([
             Heading::make('Section'),
             Text::make('Label', 'label'),
