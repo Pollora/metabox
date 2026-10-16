@@ -138,4 +138,5 @@ $status = MetaBox\CustomTable\API::get_value('status', $transactionId, MetaboxMo
 
 ---
 
-**Previous:** [Relationships](relationships.md)
+**Previous:** [Relationships](relationships.md)  
+**Next:** [Attributes](attributes.md)

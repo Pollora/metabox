@@ -195,6 +195,7 @@ add_filter('rwmb_meta_boxes', function (array $metaBoxes): array {
 - [Extensions](docs/extensions.md): conditional logic, columns, tooltips, admin columns, text limits, and rules registering or displaying field groups.
 - [Relationships](docs/relationships.md): relationships between posts, terms and users with MB Relationships.
 - [Custom tables](docs/custom-tables.md): custom tables and custom models with MB Custom Table. In Pollora, [pollora/metabox-bridge](https://github.com/Pollora/metabox-bridge) adds migrations and Eloquent models.
+- [Attributes](docs/attributes.md): declaring field groups, blocks and settings pages with attributes, discovered in Pollora by pollora/metabox-bridge.
 
 For every setting, the reference is the [Meta Box documentation](https://docs.metabox.io).
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.0 - Unreleased
+
+### Added
+
+- Attributes declaring field groups, blocks and settings pages: `#[FieldGroup]`, `#[Block]` and `#[SettingsPage]`, with a `fields()` method and an optional `configuring()` method receiving the builder. See [Attributes](docs/attributes.md).
+- Targets of a field group: `#[PostTypes]`, `#[Taxonomies]` and `#[SettingsPages]`, accepting slugs or the classes declaring them.
+- Block settings: `#[Icon]`, `#[Description]`, `#[Category]`, `#[Mode]` and `#[View]`; settings page settings: `#[Icon]`, `#[Position]`, `#[OptionName]` and `#[SubmitButton]`. Custom settings implement `FieldGroupSetting`, `BlockSetting` or `SettingsPageSetting`.
+- `Registrar`, registering the declared classes once, building them when Meta Box reads the declarations, and rejecting an ID used twice, a missing `fields()` method, an attribute of another kind or a registration after Meta Box read the declarations. The `Integration` contract connects it to a framework, such as Pollora with pollora/metabox-bridge.
+
 ## 3.0.0 - 2026-10-16
 
 ### Changed
