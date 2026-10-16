@@ -1,6 +1,6 @@
 # Basic fields
 
-The package provides a variety of basic fields that can be used to create custom metaboxes and blocks in WordPress. This document covers the basic fields available in the package and how to use them.
+The package provides a variety of basic fields that can be used to create custom field groups and blocks in WordPress. This document covers the basic fields available in the package and how to use them.
 
 ## Text Field
 

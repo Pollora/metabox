@@ -1,6 +1,6 @@
 # Layout fields
 
-The package provides a variety of fields specifically designed for layout purposes, allowing you to organize and structure your metaboxes and blocks in WordPress. This document covers the layout-specific fields available in the package and how to use them.
+The package provides a variety of fields specifically designed for layout purposes, allowing you to organize and structure your field groups and blocks in WordPress. This document covers the layout-specific fields available in the package and how to use them.
 
 ## Divider Field
 
@@ -101,7 +101,7 @@ A `Column` holds several fields in one column of the 12-column grid, one below t
 
 use Pollora\Metabox\Fields\Column;
 
-Metabox::make('Contact', 'contact')
+FieldGroup::make('Contact', 'contact')
     ->fields([
         Column::make(4)->fields([
             Text::make('Name', 'name'),
@@ -119,7 +119,7 @@ Metabox::make('Contact', 'contact')
 - **`class(string $class)`**: Adds a CSS class to the column.
 - **`fields(array $fields)`**: Adds fields, headings and dividers to the column.
 
-Columns can be used in meta boxes, blocks and tabs. A tab or a column inside a column, or a column inside a group, throws an exception: inside a group, use `columns()` on the sub-fields.
+Columns can be used in field groups, blocks and tabs. A tab or a column inside a column, or a column inside a group, throws an exception: inside a group, use `columns()` on the sub-fields.
 
 ---
 

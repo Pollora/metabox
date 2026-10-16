@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Email;
 use Pollora\Metabox\Fields\Input;
 use Pollora\Metabox\Fields\Number;
@@ -9,7 +10,6 @@ use Pollora\Metabox\Fields\Password;
 use Pollora\Metabox\Fields\Range;
 use Pollora\Metabox\Fields\Text;
 use Pollora\Metabox\Fields\Url;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\SettingsPage;
 
 test('input fields share the input settings', function (string $class) {
@@ -43,6 +43,6 @@ test('only Text can change its input type', function () {
 
 test('make() accepts named arguments', function () {
     expect(Text::make(name: 'Title', id: 'title')->build())->toMatchArray(['name' => 'Title', 'id' => 'title'])
-        ->and(Metabox::make(title: 'Event', id: 'event')->build())->toMatchArray(['title' => 'Event', 'id' => 'event'])
+        ->and(FieldGroup::make(title: 'Event', id: 'event')->build())->toMatchArray(['title' => 'Event', 'id' => 'event'])
         ->and(SettingsPage::make(pageTitle: 'Options', id: 'options')->build())->toMatchArray(['page_title' => 'Options', 'id' => 'options']);
 });

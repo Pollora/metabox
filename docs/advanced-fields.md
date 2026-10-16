@@ -1,6 +1,6 @@
 # Advanced fields
 
-The package provides a variety of advanced fields that can be used to create more complex and interactive metaboxes and blocks in WordPress. This document covers the advanced fields available in the package and how to use them.
+The package provides a variety of advanced fields that can be used to create more complex and interactive field groups and blocks in WordPress. This document covers the advanced fields available in the package and how to use them.
 
 ## Autocomplete Field
 
@@ -351,7 +351,7 @@ This field only has the [common field settings](common-settings.md).
 
 ## GoogleMap Field
 
-The `GoogleMap` field is used to integrate Google Maps into forms or meta boxes. It uses the `MapParams` trait to provide additional configuration options.
+The `GoogleMap` field is used to integrate Google Maps into forms or field groups. It uses the `MapParams` trait to provide additional configuration options.
 
 ### Example
 
@@ -394,7 +394,7 @@ OEmbed::make('Video', 'video')
 
 ## OpenStreetMap Field
 
-The `OpenStreetMap` field is used to integrate Open Street Map into forms or meta boxes. It uses the `MapParams` trait to provide additional configuration options.
+The `OpenStreetMap` field is used to integrate Open Street Map into forms or field groups. It uses the `MapParams` trait to provide additional configuration options.
 
 ### Example
 

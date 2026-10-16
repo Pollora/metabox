@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * A rule deciding whether a meta box is registered (MB Include Exclude) or displayed (MB Show Hide).
  *
  * Pass a rule, or a group of rules built with Rule::all() or Rule::any(), to
- * Metabox::include(), exclude(), show() or hide().
+ * FieldGroup::include(), exclude(), show() or hide().
  */
 final class Rule
 {
@@ -220,7 +220,7 @@ final class Rule
     }
 
     /**
-     * Get the rule value, after checking that the Metabox method supports the rule.
+     * Get the rule value, after checking that the FieldGroup method supports the rule.
      *
      * @param  string  $method  'include', 'exclude', 'show' or 'hide'.
      */

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use Pollora\Metabox\Metabox;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Rules\Rule;
 
 test('a single rule', function () {
-    expect(Metabox::make('Homepage', 'homepage')->include(Rule::template('front-page.php'))->build())
+    expect(FieldGroup::make('Homepage', 'homepage')->include(Rule::template('front-page.php'))->build())
         ->toHaveKey('include', ['relation' => 'AND', 'template' => ['front-page.php']]);
 });
 
 test('all() combines rules with AND', function () {
-    expect(Metabox::make('Box', 'box')
+    expect(FieldGroup::make('Box', 'box')
         ->include(Rule::all(Rule::userRole('editor', 'author'), Rule::template('landing.php')))
         ->build()['include'])->toBe([
             'relation' => 'AND',
@@ -21,7 +21,7 @@ test('all() combines rules with AND', function () {
 });
 
 test('any() combines rules with OR', function () {
-    expect(Metabox::make('Box', 'box')
+    expect(FieldGroup::make('Box', 'box')
         ->exclude(Rule::any(Rule::postIds(12, 14), Rule::isChild(), Rule::terms('region', 'europe', 12)))
         ->build()['exclude'])->toBe([
             'relation' => 'OR',
@@ -34,7 +34,7 @@ test('any() combines rules with OR', function () {
 test('include and exclude rules', function () {
     $callback = fn (array $metaBox) => true;
 
-    expect(Metabox::make('Box', 'box')->include(Rule::any(
+    expect(FieldGroup::make('Box', 'box')->include(Rule::any(
         Rule::parentIds(3),
         Rule::slugs('contact', 'about'),
         Rule::category(1, 'news'),
@@ -65,7 +65,7 @@ test('include and exclude rules', function () {
 });
 
 test('show and hide rules', function () {
-    $config = Metabox::make('Video', 'video')
+    $config = FieldGroup::make('Video', 'video')
         ->show(Rule::any(Rule::postFormat('video'), Rule::template('video.php'), Rule::terms('genre', 'Documentary')))
         ->hide(Rule::all(Rule::inputValue('#featured', true), Rule::inputValue('#layout', 'wide')))
         ->build();
@@ -82,21 +82,21 @@ test('show and hide rules', function () {
 });
 
 test('rules with the same key merge in any()', function () {
-    expect(Metabox::make('Box', 'box')
+    expect(FieldGroup::make('Box', 'box')
         ->include(Rule::any(Rule::template('a.php'), Rule::template('b.php')))
         ->build()['include'])->toBe(['relation' => 'OR', 'template' => ['a.php', 'b.php']]);
 });
 
 test('rules with the same key cannot be combined with AND', function () {
-    Metabox::make('Box', 'box')->include(Rule::all(Rule::template('a.php'), Rule::template('b.php')));
+    FieldGroup::make('Box', 'box')->include(Rule::all(Rule::template('a.php'), Rule::template('b.php')));
 })->throws(LogicException::class);
 
 test('show() rejects rules MB Show Hide does not support', function () {
-    Metabox::make('Box', 'box')->show(Rule::userRole('editor'));
+    FieldGroup::make('Box', 'box')->show(Rule::userRole('editor'));
 })->throws(InvalidArgumentException::class, "The 'user_role' rule is not supported by show(): it only works with include() and exclude().");
 
 test('include() rejects rules MB Include Exclude does not support', function () {
-    Metabox::make('Box', 'box')->include(Rule::postFormat('video'));
+    FieldGroup::make('Box', 'box')->include(Rule::postFormat('video'));
 })->throws(InvalidArgumentException::class, "The 'post_format' rule is not supported by include(): it only works with show() and hide().");
 
 test('a group needs at least one rule', function () {

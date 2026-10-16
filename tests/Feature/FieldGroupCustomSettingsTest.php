@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Pollora\Metabox\Enums\Context;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Text;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 
 test('can add custom settings to a metabox', function () {
-    $metabox = Metabox::make('Custom Settings Test', 'custom_settings_test')
+    $metabox = FieldGroup::make('Custom Settings Test', 'custom_settings_test')
         ->description('Test metabox with custom settings')
         ->priority('high')
         ->setting('custom_option', 'custom_value')
@@ -30,7 +30,7 @@ test('can add custom settings to a metabox', function () {
     ]);
 });
 
-$metabox = Metabox::make('Metabox with Fields', 'metabox_with_fields')
+$metabox = FieldGroup::make('Field group with fields', 'field_group_with_fields')
     ->fields([
         Text::make('Name', 'name')->required(),
         Text::make('Email', 'email')->type('email'),
@@ -40,7 +40,7 @@ $metabox = Metabox::make('Metabox with Fields', 'metabox_with_fields')
     ->location(Location::where('post_types', 'page'));
 
 test('custom settings work with fields', function () {
-    $metabox = Metabox::make('Metabox with Fields', 'metabox_with_fields')
+    $metabox = FieldGroup::make('Field group with fields', 'field_group_with_fields')
         ->fields([
             Text::make('Name', 'name')->required(),
             Text::make('Email', 'email')->type('email'),
@@ -52,8 +52,8 @@ test('custom settings work with fields', function () {
     $data = $metabox->build();
 
     expect($data)->toMatchArray([
-        'title' => 'Metabox with Fields',
-        'id' => 'metabox_with_fields',
+        'title' => 'Field group with fields',
+        'id' => 'field_group_with_fields',
         'validation_endpoint' => '/api/validate',
         'autosave_interval' => 30,
         'post_types' => 'page',
@@ -69,7 +69,7 @@ test('custom settings work with fields', function () {
 });
 
 test('empty custom settings are not included in metabox build output', function () {
-    $metabox = Metabox::make('No Custom Settings', 'no_custom_settings')
+    $metabox = FieldGroup::make('No Custom Settings', 'no_custom_settings')
         ->description('Test without custom settings')
         ->location(Location::where('post_types', 'post'));
 
@@ -85,7 +85,7 @@ test('empty custom settings are not included in metabox build output', function 
 });
 
 test('custom settings can override existing metabox properties', function () {
-    $metabox = Metabox::make('override_test', 'Override Test')
+    $metabox = FieldGroup::make('override_test', 'Override Test')
         ->description('Original description')
         ->setting('description', 'Overridden description')
         ->location(Location::where('post_types', 'post'));
@@ -96,7 +96,7 @@ test('custom settings can override existing metabox properties', function () {
 });
 
 test('getSettings method returns all custom settings', function () {
-    $metabox = Metabox::make('get_settings_test', 'Get Settings Test')
+    $metabox = FieldGroup::make('get_settings_test', 'Get Settings Test')
         ->setting('option1', 'value1')
         ->setting('option2', 'value2')
         ->setting('option3', true);
@@ -116,10 +116,10 @@ it('uses valid Meta Box values for the context enum', function () {
 });
 
 it('accepts a null class', function () {
-    expect(Metabox::make('Box', 'box')->class(null)->build())->not->toHaveKey('class');
+    expect(FieldGroup::make('Box', 'box')->class(null)->build())->not->toHaveKey('class');
 });
 
 it('targets posts with the post_types key by default', function () {
-    expect(Metabox::make('Box', 'box')->build())->toHaveKey('post_types', ['post'])
+    expect(FieldGroup::make('Box', 'box')->build())->toHaveKey('post_types', ['post'])
         ->not->toHaveKey('post_type');
 });

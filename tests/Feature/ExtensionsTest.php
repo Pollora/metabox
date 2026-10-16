@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Pollora\Metabox\Enums\AdminColumnLink;
 use Pollora\Metabox\Enums\ToggleType;
 use Pollora\Metabox\Enums\TooltipPosition;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Checkbox;
 use Pollora\Metabox\Fields\Divider;
 use Pollora\Metabox\Fields\Email;
@@ -14,7 +15,6 @@ use Pollora\Metabox\Fields\Select;
 use Pollora\Metabox\Fields\Text;
 use Pollora\Metabox\Fields\Textarea;
 use Pollora\Metabox\Fields\Wysiwyg;
-use Pollora\Metabox\Metabox;
 
 describe('conditional logic', function () {
     test('two arguments compare with =', function () {
@@ -92,7 +92,7 @@ describe('conditional logic', function () {
             ->toHaveKey('visible', ['type', '=', 'custom'])
             ->and(Divider::make()->hiddenWhen('type', 'custom')->build())
             ->toHaveKey('hidden', ['type', '=', 'custom'])
-            ->and(Metabox::make('Box', 'box')->hiddenWhen('post_format', 'aside')->toggleType(ToggleType::Fade)->build())
+            ->and(FieldGroup::make('Box', 'box')->hiddenWhen('post_format', 'aside')->toggleType(ToggleType::Fade)->build())
             ->toMatchArray(['hidden' => ['post_format', '=', 'aside'], 'toggle_type' => 'fade']);
     });
 });

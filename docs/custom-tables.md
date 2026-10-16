@@ -15,10 +15,10 @@ A table name can only contain letters, digits and underscores. To use an existin
 ```php
 <?php
 
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 
-Metabox::make('Event details', 'event_details')
+FieldGroup::make('Event details', 'event_details')
     ->location(Location::postTypes('event'))
     ->customTable('events')
     ->fields([
@@ -37,8 +37,8 @@ Each row holds the values of one post, term or user: the `ID` column is its ID, 
 <?php
 
 use Pollora\Metabox\Enums\ModelSupport;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\MetaboxModel;
 
 MetaboxModel::make('transaction')
@@ -47,7 +47,7 @@ MetaboxModel::make('transaction')
     ->menuIcon('dashicons-money-alt')
     ->supports(ModelSupport::Author, ModelSupport::PublishedDate);
 
-Metabox::make('Transaction', 'transaction_details')
+FieldGroup::make('Transaction', 'transaction_details')
     ->location(Location::models('transaction'))
     ->fields([
         Number::make('Amount', 'amount'),
@@ -57,7 +57,7 @@ Metabox::make('Transaction', 'transaction_details')
 
 The model is registered on the `init` action: declare it before, for instance in a service provider or in `functions.php`. Declaring it later, or declaring a name twice, throws a `LogicException`.
 
-A meta box located on a model stores its values in the table of the model: `customTable()` is not needed. A model not declared with `MetaboxModel`, or models with different tables in the same meta box, throw a `LogicException`.
+A field group located on a model stores its values in the table of the model: `customTable()` is not needed. A model not declared with `MetaboxModel`, or models with different tables in the same field group, throw a `LogicException`.
 
 ### Methods
 
@@ -75,7 +75,7 @@ A meta box located on a model stores its values in the table of the model: `cust
 
 ## Creating the tables
 
-The package does not create tables: create them with a migration, before the meta boxes save values.
+The package does not create tables: create them with a migration, before the field groups save values.
 
 ### With Laravel migrations (Pollora)
 

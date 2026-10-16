@@ -4,23 +4,23 @@ Dedicated methods for the settings of the Meta Box extensions. Each one needs it
 
 ## Conditional logic
 
-Shows or hides a field, a heading, a divider or a whole meta box depending on the value of other fields. Requires [Meta Box Conditional Logic](https://docs.metabox.io/extensions/meta-box-conditional-logic/).
+Shows or hides a field, a heading, a divider or a whole field group depending on the value of other fields. Requires [Meta Box Conditional Logic](https://docs.metabox.io/extensions/meta-box-conditional-logic/).
 
 ### Example
 
 ```php
 <?php
 
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Number;
 use Pollora\Metabox\Fields\Post;
 use Pollora\Metabox\Fields\Select;
 use Pollora\Metabox\Fields\Url;
-use Pollora\Metabox\Metabox;
 
 $linkType = Select::make('Link type', 'link_type')
     ->options(['page' => 'Page', 'custom' => 'Custom URL']);
 
-Metabox::make('Call to action', 'cta')
+FieldGroup::make('Call to action', 'cta')
     ->fields([
         $linkType,
         Post::make('Page', 'page')->postType('page')->visibleWhen($linkType, 'page'),
@@ -54,7 +54,7 @@ Meta Box applies a single relation to all the conditions of an element, so mixin
 - **`visibleWhen(Field|string $field, mixed $operator, mixed $value = null)`**: Shows the element when the condition matches.
 - **`orVisibleWhen(...)`**: Same, combined with the previous conditions with OR.
 - **`hiddenWhen(...)`** / **`orHiddenWhen(...)`**: Hides the element when the condition matches.
-- **`Metabox::toggleType(string|ToggleType $type)`**: Sets how fields are shown and hidden: `display` (default, the next fields move up), `visibility` (hidden fields keep their space), `slide` or `fade`.
+- **`FieldGroup::toggleType(string|ToggleType $type)`**: Sets how fields are shown and hidden: `display` (default, the next fields move up), `visibility` (hidden fields keep their space), `slide` or `fade`.
 
 Operators: `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`, `contains`, `between`, `starts with`, `ends with`, `match`, and the `not` forms (`not in`, `not contains`, `not between`, `not starts with`, `not ends with`, `not match`). Any other operator throws an `InvalidArgumentException`.
 
@@ -146,7 +146,7 @@ Fills fields from an address selected in an autocomplete field. Requires [MB Geo
 The autocomplete field is a text field whose ID starts with `address`. When an address is selected, the fields named after an address component, such as `locality` or `postal_code`, are filled, and a map field moves its marker.
 
 ```php
-Metabox::make('Venue', 'venue')
+FieldGroup::make('Venue', 'venue')
     ->geolocation(apiKey: 'GOOGLE_MAPS_API_KEY', countries: ['fr', 'be'])
     ->fields([
         Text::make('Address', 'address'),
@@ -157,9 +157,9 @@ Metabox::make('Venue', 'venue')
     ]);
 ```
 
-- **`Metabox::geolocation(?string $apiKey = null, array $types = [], string|array $countries = [])`**: Enables the autocomplete. Without an API key, and without a Google Maps field, OpenStreetMap is used. `$types` restricts the Google suggestions to place types, e.g. `['establishment']` or `['(cities)']`. `$countries` restricts them to at most 5 countries, as ISO 3166-1 alpha-2 codes: another value throws an exception.
+- **`FieldGroup::geolocation(?string $apiKey = null, array $types = [], string|array $countries = [])`**: Enables the autocomplete. Without an API key, and without a Google Maps field, OpenStreetMap is used. `$types` restricts the Google suggestions to place types, e.g. `['establishment']` or `['(cities)']`. `$countries` restricts them to at most 5 countries, as ISO 3166-1 alpha-2 codes: another value throws an exception.
 - **`geoBinding(string $binding, bool $bindIfEmpty = true)`**: Fills the field with an address component when its ID is not the component name: a component (`locality`), its short name (`short:country`), or an expression combining components (`'postal_code + " " + locality'`). With `bindIfEmpty: false`, an empty component keeps the current value. Available on input, `Textarea`, `Hidden`, `Select` and `SelectAdvanced` fields.
-- **`addressField(string $addressField)`**: When the meta box has several autocomplete fields, binds the field to one of them, e.g. the head office address and the branch address.
+- **`addressField(string $addressField)`**: When the field group has several autocomplete fields, binds the field to one of them, e.g. the head office address and the branch address.
 
 ## SEO analysis
 
@@ -173,33 +173,33 @@ Wysiwyg::make('Introduction', 'introduction')->seoAnalysis(),
 
 ## Include, exclude, show and hide
 
-Registers or displays a whole meta box depending on the post, the user or the edit screen. Requires [MB Include Exclude](https://docs.metabox.io/extensions/meta-box-include-exclude/) for `include()` and `exclude()`, and [MB Show Hide](https://docs.metabox.io/extensions/meta-box-show-hide/) for `show()` and `hide()`.
+Registers or displays a whole field group depending on the post, the user or the edit screen. Requires [MB Include Exclude](https://docs.metabox.io/extensions/meta-box-include-exclude/) for `include()` and `exclude()`, and [MB Show Hide](https://docs.metabox.io/extensions/meta-box-show-hide/) for `show()` and `hide()`.
 
 ```php
 <?php
 
-use Pollora\Metabox\Metabox;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Rules\Rule;
 
-Metabox::make('Homepage', 'homepage')
+FieldGroup::make('Homepage', 'homepage')
     ->include(Rule::template('front-page.php'));
 
-Metabox::make('Editors only', 'editors')
+FieldGroup::make('Editors only', 'editors')
     ->include(Rule::all(Rule::userRole('editor', 'administrator'), Rule::template('landing.php')))
     ->exclude(Rule::any(Rule::postIds(12, 14), Rule::isChild()));
 
-Metabox::make('Video', 'video')
+FieldGroup::make('Video', 'video')
     ->show(Rule::postFormat('video'));
 ```
 
-`include()` and `exclude()` are checked when the edit screen loads: the meta box is registered or not. `show()` and `hide()` are applied in the browser and follow the changes made while editing, such as a new page template or post format.
+`include()` and `exclude()` are checked when the edit screen loads: the field group is registered or not. `show()` and `hide()` are applied in the browser and follow the changes made while editing, such as a new page template or post format.
 
 Combine rules with `Rule::all()` (every rule must match) or `Rule::any()` (one rule is enough). A rule accepts several values and matches any of them: `Rule::userRole('editor', 'administrator')`.
 
 ### Methods
 
-- **`include(Rule|RuleGroup $rule)`** / **`exclude(Rule|RuleGroup $rule)`**: Registers, or does not register, the meta box when the rule matches.
-- **`show(Rule|RuleGroup $rule)`** / **`hide(Rule|RuleGroup $rule)`**: Displays or hides the meta box when the rule matches.
+- **`include(Rule|RuleGroup $rule)`** / **`exclude(Rule|RuleGroup $rule)`**: Registers, or does not register, the field group when the rule matches.
+- **`show(Rule|RuleGroup $rule)`** / **`hide(Rule|RuleGroup $rule)`**: Displays or hides the field group when the rule matches.
 
 ### Rules
 
@@ -219,7 +219,7 @@ Rule | `include` / `exclude` | `show` / `hide`
 `Rule::userId(int ...$ids)` | ✓ |
 `Rule::capability(string ...$capabilities)` | ✓ |
 `Rule::editedUserRole(...)`, `Rule::editedUserId(...)` (MB User Meta) | ✓ |
-`Rule::custom(callable $callback)`: receives the meta box settings, returns a boolean | ✓ |
+`Rule::custom(callable $callback)`: receives the field group settings, returns a boolean | ✓ |
 `Rule::inputValue(string $selector, mixed $value)`: an input of the edit screen has a value, `true` for a checked checkbox | | ✓
 
 Passing a rule to a method that does not support it throws an `InvalidArgumentException`, instead of being ignored. Meta Box cannot combine two rules with the same key with AND, so `Rule::all(Rule::template('a.php'), Rule::template('b.php'))` throws a `LogicException`: use `Rule::template('a.php', 'b.php')`, which matches either template.

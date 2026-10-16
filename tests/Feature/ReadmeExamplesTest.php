@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Pollora\Metabox\Block;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Email;
 use Pollora\Metabox\Fields\Group;
 use Pollora\Metabox\Fields\Number;
@@ -10,14 +11,13 @@ use Pollora\Metabox\Fields\Select;
 use Pollora\Metabox\Fields\Text;
 use Pollora\Metabox\Fields\Url;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\Rules\Rule;
 use Pollora\Metabox\SettingsPage;
 
 // Keeps the Quick start examples of the README working.
 
 test('README meta box example', function () {
-    $config = Metabox::make('Event', 'event')
+    $config = FieldGroup::make('Event', 'event')
         ->location(Location::postTypes('page'))
         ->context('side')
         ->fields([
@@ -61,7 +61,7 @@ test('README settings page example', function () {
         ->optionName('site_options')
         ->build();
 
-    $box = Metabox::make('Contact', 'contact')
+    $box = FieldGroup::make('Contact', 'contact')
         ->location(Location::settingsPages('site-options'))
         ->fields([
             Email::make('Contact email', 'contact_email'),
@@ -76,7 +76,7 @@ test('README "Why Metabox" example builds the array shown next to it', function 
     $linkType = Select::make('Link type', 'link_type')
         ->options(['page' => 'Page', 'custom' => 'Custom URL']);
 
-    $config = Metabox::make('Call to action', 'cta')
+    $config = FieldGroup::make('Call to action', 'cta')
         ->location(Location::postTypes('page'))
         ->context('side')
         ->include(Rule::template('templates/landing.php'))

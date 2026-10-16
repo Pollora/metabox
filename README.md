@@ -27,15 +27,15 @@ Coming from `amphibee/metabox-maker`? Read the [upgrade guide](UPGRADE.md).
 
 ## Quick start
 
-A meta box with two fields in the sidebar of the page editor:
+A field group with two fields in the sidebar of the page editor:
 
 ```php
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Number;
 use Pollora\Metabox\Fields\Text;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 
-Metabox::make('Event', 'event')
+FieldGroup::make('Event', 'event')
     ->location(Location::postTypes('page'))
     ->context('side')
     ->fields([
@@ -72,19 +72,19 @@ Block::make('Useful links', 'useful-links')
     ]);
 ```
 
-A settings page, and a meta box displayed on it:
+A settings page, and a field group displayed on it:
 
 ```php
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Email;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\SettingsPage;
 
 SettingsPage::make('Site options', 'site-options')
     ->icon('admin-generic')
     ->optionName('site_options');
 
-Metabox::make('Contact', 'contact')
+FieldGroup::make('Contact', 'contact')
     ->location(Location::settingsPages('site-options'))
     ->fields([
         Email::make('Contact email', 'contact_email'),
@@ -101,22 +101,22 @@ Compared with the arrays passed to the `rwmb_meta_boxes` filter:
 - Enumerated values (contexts, styles, operators, block modes…) are checked when they are set, with a message listing the allowed values.
 - Extension settings get readable methods: `visibleWhen()`, `adminColumn(after: 'title')`, `include(Rule::template(...))`.
 - Fields can be referenced by instance in conditions, so renaming a field ID updates them too.
-- The meta box is registered for you: no filter callback to write.
+- The field group is registered for you: no filter callback to write.
 
 ### With Metabox
 
 ```php
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Number;
 use Pollora\Metabox\Fields\Select;
 use Pollora\Metabox\Fields\Url;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 use Pollora\Metabox\Rules\Rule;
 
 $linkType = Select::make('Link type', 'link_type')
     ->options(['page' => 'Page', 'custom' => 'Custom URL']);
 
-Metabox::make('Call to action', 'cta')
+FieldGroup::make('Call to action', 'cta')
     ->location(Location::postTypes('page'))
     ->context('side')
     ->include(Rule::template('templates/landing.php'))
@@ -173,7 +173,7 @@ add_filter('rwmb_meta_boxes', function (array $metaBoxes): array {
 ## Features
 
 - About 50 field types, from text inputs to files, maps, posts, taxonomies and users, with the settings of each type as methods.
-- Meta boxes, Gutenberg blocks (MB Blocks) and settings pages (MB Settings Page), displayed on post types, terms, users, comments or settings pages.
+- Field groups (meta boxes on edit screens), Gutenberg blocks (MB Blocks) and settings pages (MB Settings Page), displayed on post types, terms, users, comments or settings pages.
 - Groups and tabs, with nested fields.
 - Enumerated settings (context, priority, styles…) accept a string or an enum, and an invalid value throws an exception.
 - Blocks restricted to, or excluded from, given post types.
@@ -182,7 +182,7 @@ add_filter('rwmb_meta_boxes', function (array $metaBoxes): array {
 
 ## Documentation
 
-- [Meta boxes](docs/metaboxes.md): creating meta boxes and choosing where they are displayed.
+- [Field groups](docs/field-groups.md): creating field groups and choosing where they are displayed.
 - [Common field settings](docs/common-settings.md): the settings shared by every field.
 - [Basic fields](docs/basic-fields.md): text, textarea, select, checkbox, radio…
 - [Advanced fields](docs/advanced-fields.md): autocomplete, color, date and time pickers, maps, sliders, WYSIWYG…
@@ -192,7 +192,7 @@ add_filter('rwmb_meta_boxes', function (array $metaBoxes): array {
 - [Layout fields](docs/layout-fields.md): headings, dividers, groups and tabs.
 - [Blocks](docs/blocks.md): Gutenberg blocks with MB Blocks.
 - [Settings pages](docs/settings-pages.md): settings pages with MB Settings Page.
-- [Extensions](docs/extensions.md): conditional logic, columns, tooltips, admin columns, text limits, and rules registering or displaying meta boxes.
+- [Extensions](docs/extensions.md): conditional logic, columns, tooltips, admin columns, text limits, and rules registering or displaying field groups.
 - [Relationships](docs/relationships.md): relationships between posts, terms and users with MB Relationships.
 - [Custom tables](docs/custom-tables.md): custom tables and custom models with MB Custom Table. In Pollora, [pollora/metabox-bridge](https://github.com/Pollora/metabox-bridge) adds migrations and Eloquent models.
 

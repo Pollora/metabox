@@ -1,6 +1,6 @@
 # HTML5 fields
 
-The package provides a variety of HTML5 fields that can be used to create modern and interactive metaboxes and blocks in WordPress. This document covers the HTML5 fields available in the package and how to use them.
+The package provides a variety of HTML5 fields that can be used to create modern and interactive field groups and blocks in WordPress. This document covers the HTML5 fields available in the package and how to use them.
 
 ## Email Field
 

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Group;
 use Pollora\Metabox\Fields\Text;
 use Pollora\Metabox\Location;
-use Pollora\Metabox\Metabox;
 
-$fieldset = Metabox::make('Example Fieldset', 'example_fieldset');
+$fieldset = FieldGroup::make('Example Fieldset', 'example_fieldset');
 
 beforeEach(function () {
     // Simulate a location object
     $this->location = Location::where('post_types', ['post', 'page']);
-    $this->fieldset = Metabox::make('Example Fieldset', 'example_fieldset');
+    $this->fieldset = FieldGroup::make('Example Fieldset', 'example_fieldset');
 });
 
 test('can create a Fieldset instance', function () {
-    expect($this->fieldset)->toBeInstanceOf(Metabox::class)
+    expect($this->fieldset)->toBeInstanceOf(FieldGroup::class)
         ->and($this->fieldset->build())->toHaveKey('title', 'Example Fieldset')
         ->and($this->fieldset->build())->toHaveKey('id', 'example_fieldset');
 });
@@ -55,7 +55,7 @@ test('can set location', function () {
 });
 
 test('can add groups and fields', function () {
-    $mainGroup = Metabox::make('Test Fieldset', 'test_fieldset')
+    $mainGroup = FieldGroup::make('Test Fieldset', 'test_fieldset')
         ->fields([
             Text::make('Main Text', 'main_text')
                 ->placeholder('Enter main text'),

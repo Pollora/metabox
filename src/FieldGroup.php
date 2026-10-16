@@ -23,77 +23,77 @@ use Pollora\Metabox\Transformer\FieldTransformer;
 use Pollora\Metabox\Validation\OptionValidation;
 
 /**
- * Meta box: a group of fields registered with Meta Box.
+ * Field group: fields registered together with Meta Box, displayed as a meta box on edit screens.
  *
  * @phpstan-consistent-constructor
  */
-class Metabox implements Renderable
+class FieldGroup implements Renderable
 {
     use ConditionalLogic;
     use FieldTransformer;
 
     /**
-     * The context of the meta box.
+     * The context of the field group.
      */
     protected string $context;
 
     /**
-     * The fields within the meta box.
+     * The fields within the field group.
      */
     protected array $fields = [];
 
     /**
-     * The tabs within the meta box.
+     * The tabs within the field group.
      */
     protected array $tabs = [];
 
     /**
-     * The location of the meta box.
+     * The location of the field group.
      */
     protected ?Location $location = null;
 
     /**
-     * The priority of the meta box.
+     * The priority of the field group.
      */
     protected string|int|null $priority = null;
 
     /**
-     * The style of the meta box.
+     * The style of the field group.
      */
     protected string $style;
 
     /**
-     * Whether the meta box is initially closed.
+     * Whether the field group is initially closed.
      */
     protected bool $closed;
 
     /**
-     * Whether the meta box is initially hidden.
+     * Whether the field group is initially hidden.
      */
     protected bool $default_hidden;
 
     /**
-     * Whether the meta box autosaves its content.
+     * Whether the field group autosaves its content.
      */
     protected bool $autosave;
 
     /**
-     * Whether the meta box opens a media modal when clicked.
+     * Whether the field group opens a media modal when clicked.
      */
     protected bool $media_modal;
 
     /**
-     * The class of the meta box.
+     * The class of the field group.
      */
     protected ?string $class = null;
 
     /**
-     * The description of the meta box.
+     * The description of the field group.
      */
     protected string $description;
 
     /**
-     * The type of the metabox.
+     * The type of the field group.
      */
     protected string $type;
 
@@ -103,7 +103,7 @@ class Metabox implements Renderable
     protected string $tab_style;
 
     /**
-     * Whether the meta box wrapper is displayed around the tabs.
+     * Whether the field group wrapper is displayed around the tabs.
      */
     protected bool $tab_wrapper;
 
@@ -143,22 +143,22 @@ class Metabox implements Renderable
     protected string $toggle_type;
 
     /**
-     * The rules registering the meta box (MB Include Exclude).
+     * The rules registering the field group (MB Include Exclude).
      */
     protected array $include;
 
     /**
-     * The rules not registering the meta box (MB Include Exclude).
+     * The rules not registering the field group (MB Include Exclude).
      */
     protected array $exclude;
 
     /**
-     * The rules displaying the meta box (MB Show Hide).
+     * The rules displaying the field group (MB Show Hide).
      */
     protected array $show;
 
     /**
-     * The rules hiding the meta box (MB Show Hide).
+     * The rules hiding the field group (MB Show Hide).
      */
     protected array $hide;
 
@@ -183,15 +183,15 @@ class Metabox implements Renderable
     protected ?string $option_name = null;
 
     /**
-     * The custom settings for the metabox.
+     * The custom settings for the field group.
      */
     protected array $settings = [];
 
     /**
-     * Construct a new meta box.
+     * Construct a new field group.
      *
-     * @param  string  $title  The title of the meta box.
-     * @param  string  $id  The unique identifier of the meta box.
+     * @param  string  $title  The title of the field group.
+     * @param  string  $id  The unique identifier of the field group.
      */
     public function __construct(protected string $id, protected string $title)
     {
@@ -209,10 +209,10 @@ class Metabox implements Renderable
     }
 
     /**
-     * Create a meta box. It is registered with Meta Box automatically.
+     * Create a field group. It is registered with Meta Box automatically.
      *
-     * @param  string  $title  The title of the meta box.
-     * @param  string  $id  The ID of the meta box.
+     * @param  string  $title  The title of the field group.
+     * @param  string  $id  The ID of the field group.
      */
     public static function make(string $title, string $id): static
     {
@@ -220,9 +220,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the context of the meta box.
+     * Set the context of the field group.
      *
-     * @param  string|Context  $context  The context of the meta box.
+     * @param  string|Context  $context  The context of the field group.
      */
     public function context(string|Context $context): static
     {
@@ -232,7 +232,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Add fields to the meta box.
+     * Add fields to the field group.
      *
      * @param  array<Field>  $fields  The fields to add.
      */
@@ -244,9 +244,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the tabs of the meta box.
+     * Set the tabs of the field group.
      *
-     * @param  array  $tabs  The tabs of the meta box.
+     * @param  array  $tabs  The tabs of the field group.
      */
     public function tabs(array $tabs): static
     {
@@ -256,10 +256,10 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the priority of the meta box: 'high' or 'low', or the position of the
+     * Set the priority of the field group: 'high' or 'low', or the position of the
      * section in the Customizer, e.g. 30.
      *
-     * @param  string|int|Priority  $priority  The priority of the meta box.
+     * @param  string|int|Priority  $priority  The priority of the field group.
      */
     public function priority(string|int|Priority $priority): static
     {
@@ -269,9 +269,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the location of the meta box.
+     * Set the location of the field group.
      *
-     * @param  Location  $location  The location of the meta box.
+     * @param  Location  $location  The location of the field group.
      */
     public function location(Location $location): static
     {
@@ -281,9 +281,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the style of the meta box.
+     * Set the style of the field group.
      *
-     * @param  string|BoxStyle  $style  The style of the meta box.
+     * @param  string|BoxStyle  $style  The style of the field group.
      */
     public function style(string|BoxStyle $style): static
     {
@@ -293,9 +293,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set whether the meta box is initially closed.
+     * Set whether the field group is initially closed.
      *
-     * @param  bool  $closed  Whether the meta box is initially closed.
+     * @param  bool  $closed  Whether the field group is initially closed.
      */
     public function closed(bool $closed): static
     {
@@ -305,9 +305,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set whether the meta box is initially hidden.
+     * Set whether the field group is initially hidden.
      *
-     * @param  bool  $defaultHidden  Whether the meta box is initially hidden.
+     * @param  bool  $defaultHidden  Whether the field group is initially hidden.
      */
     public function defaultHidden(bool $defaultHidden): static
     {
@@ -317,9 +317,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set whether the meta box autosaves its content.
+     * Set whether the field group autosaves its content.
      *
-     * @param  bool  $autosave  Whether the meta box autosaves its content.
+     * @param  bool  $autosave  Whether the field group autosaves its content.
      */
     public function autosave(bool $autosave): static
     {
@@ -329,9 +329,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set whether the meta box opens a media modal when clicked.
+     * Set whether the field group opens a media modal when clicked.
      *
-     * @param  bool  $mediaModal  Whether the meta box opens a media modal when clicked.
+     * @param  bool  $mediaModal  Whether the field group opens a media modal when clicked.
      */
     public function mediaModal(bool $mediaModal): static
     {
@@ -341,9 +341,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the class of the meta box.
+     * Set the class of the field group.
      *
-     * @param  string|null  $class  The class of the meta box.
+     * @param  string|null  $class  The class of the field group.
      */
     public function class(?string $class): static
     {
@@ -353,9 +353,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the description of the meta box.
+     * Set the description of the field group.
      *
-     * @param  string  $description  The description of the meta box.
+     * @param  string  $description  The description of the field group.
      */
     public function description(string $description): static
     {
@@ -365,9 +365,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set the type of the meta box.
+     * Set the type of the field group.
      *
-     * @param  string  $type  The type of the meta box.
+     * @param  string  $type  The type of the field group.
      */
     public function type(string $type): static
     {
@@ -387,7 +387,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set whether the meta box wrapper is displayed around the tabs.
+     * Set whether the field group wrapper is displayed around the tabs.
      */
     public function tabWrapper(bool $wrapper = true): static
     {
@@ -468,7 +468,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set how conditional logic shows and hides the fields of the metabox.
+     * Set how conditional logic shows and hides the fields of the field group.
      */
     public function toggleType(string|ToggleType $toggleType): static
     {
@@ -478,7 +478,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Only register the meta box when the rule matches, e.g. Rule::template('landing.php'),
+     * Only register the field group when the rule matches, e.g. Rule::template('landing.php'),
      * evaluated when the edit screen loads (MB Include Exclude).
      */
     public function include(Rule|RuleGroup $rule): static
@@ -489,7 +489,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Do not register the meta box when the rule matches (MB Include Exclude).
+     * Do not register the field group when the rule matches (MB Include Exclude).
      */
     public function exclude(Rule|RuleGroup $rule): static
     {
@@ -499,7 +499,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Display the meta box when the rule matches, updated live while editing,
+     * Display the field group when the rule matches, updated live while editing,
      * e.g. when the page template changes (MB Show Hide).
      */
     public function show(Rule|RuleGroup $rule): static
@@ -510,7 +510,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Hide the meta box when the rule matches, updated live while editing (MB Show Hide).
+     * Hide the field group when the rule matches, updated live while editing (MB Show Hide).
      */
     public function hide(Rule|RuleGroup $rule): static
     {
@@ -561,7 +561,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Display the meta box as a section of the Customizer instead of an edit screen,
+     * Display the field group as a section of the Customizer instead of an edit screen,
      * at the top level or in the given panel (MB Settings Page).
      *
      * @param  string|null  $panel  The ID of the panel holding the section.
@@ -576,7 +576,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Set a custom setting for the metabox.
+     * Set a custom setting for the field group.
      *
      * @param  string  $key  The setting key.
      * @param  mixed  $value  The setting value.
@@ -589,7 +589,7 @@ class Metabox implements Renderable
     }
 
     /**
-     * Get the custom settings for the metabox.
+     * Get the custom settings for the field group.
      *
      * @return array The custom settings.
      */
@@ -599,9 +599,9 @@ class Metabox implements Renderable
     }
 
     /**
-     * Build the meta box and return its settings.
+     * Build the field group and return its settings.
      *
-     * @return array The settings of the meta box.
+     * @return array The settings of the field group.
      */
     public function build(): array
     {
@@ -616,7 +616,7 @@ class Metabox implements Renderable
         $metaboxData = EmptyValueFilter::filter(get_object_vars($this));
         $metaboxData = array_merge($metaboxData, $this->customTableSettings());
 
-        // Remove the settings array and location from the metabox data
+        // Remove the settings array and location from the field group data
         unset($metaboxData['settings'], $metaboxData['location']);
 
         // Merge custom settings if they exist
@@ -629,7 +629,7 @@ class Metabox implements Renderable
 
     /**
      * The custom table settings: the table set with customTable(), or the table of the models
-     * the meta box is displayed on.
+     * the field group is displayed on.
      */
     protected function customTableSettings(): array
     {
@@ -651,7 +651,7 @@ class Metabox implements Renderable
         }, $models));
 
         if (count($tables) > 1) {
-            throw new LogicException('The models of a meta box must share the same table: '.implode(', ', $tables).'.');
+            throw new LogicException('The models of a field group must share the same table: '.implode(', ', $tables).'.');
         }
 
         return ['storage_type' => 'custom_table', 'table' => $tables[0]];

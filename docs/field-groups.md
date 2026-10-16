@@ -1,22 +1,22 @@
-# Meta boxes
+# Field groups
 
-The `Metabox` class provides a powerful and flexible way to create custom metaboxes in WordPress. This guide will walk you through the process of creating a metabox and adding fields to it.
+A field group is a set of fields registered together with Meta Box, the same name MB Builder and ACF use. On a post edit screen, it is displayed as a meta box; on a term, a user, a settings page or in the Customizer, as a section. The `FieldGroup` class creates field groups: this guide walks you through creating one and adding fields to it.
 
 ## Basic Usage
 
-To create a metabox, you need to use the `Metabox::make` method, which initializes a new metabox with a title and an ID. You can then chain methods to configure the metabox's properties and add fields.
+To create a field group, you need to use the `FieldGroup::make` method, which initializes a new field group with a title and an ID. You can then chain methods to configure the field group's properties and add fields.
 
 ### Example
 
 ```php
 <?php
 
-use Pollora\Metabox\Metabox;
-use Pollora\Metabox\Fields\Text;
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Number;
+use Pollora\Metabox\Fields\Text;
 
-Metabox::make('User Information', 'user_info')
-    ->description('A metabox for user information')
+FieldGroup::make('User Information', 'user_info')
+    ->description('A field group for user information')
     ->context('normal')
     ->priority('high')
     ->fields([
@@ -33,22 +33,22 @@ Metabox::make('User Information', 'user_info')
 
 **Display**
 
-- **`description(string $description)`**: Sets the description of the metabox.
-- **`context(string|Context $context)`**: Sets where the metabox appears: `normal`, `advanced`, `side`, `form_top`, `after_title`, `after_editor` or `before_permalink`.
-- **`priority(string|int|Priority $priority)`**: Sets the priority of the metabox: `high` or `low`. An integer sets the position of a Customizer section: it throws a `LogicException` unless the meta box uses `customizer()` or a settings page location.
+- **`description(string $description)`**: Sets the description of the field group.
+- **`context(string|Context $context)`**: Sets where the field group appears: `normal`, `advanced`, `side`, `form_top`, `after_title`, `after_editor` or `before_permalink`.
+- **`priority(string|int|Priority $priority)`**: Sets the priority of the field group: `high` or `low`. An integer sets the position of a Customizer section: it throws a `LogicException` unless the field group uses `customizer()` or a settings page location.
 - **`style(string|BoxStyle $style)`**: Sets the style: `default` or `seamless` (without the box wrapper).
-- **`closed(bool $closed)`**: Collapses the metabox by default.
-- **`defaultHidden(bool $defaultHidden)`**: Hides the metabox by default. It can be shown again from the screen options.
-- **`class(?string $class)`**: Adds a CSS class to the metabox.
-- **`location(Location $location)`**: Sets where the metabox is displayed. See [Setting the Location](#setting-the-location).
-- **`customizer(?string $panel = null, ?string $optionName = null)`**: Displays the meta box as a section of the Customizer instead of an edit screen, at the top level or in the given panel. The values are saved in the theme mods, or in the given option. See [Settings pages](settings-pages.md#customizer-sections-without-a-settings-page).
+- **`closed(bool $closed)`**: Collapses the field group by default.
+- **`defaultHidden(bool $defaultHidden)`**: Hides the field group by default. It can be shown again from the screen options.
+- **`class(?string $class)`**: Adds a CSS class to the field group.
+- **`location(Location $location)`**: Sets where the field group is displayed. See [Setting the Location](#setting-the-location).
+- **`customizer(?string $panel = null, ?string $optionName = null)`**: Displays the field group as a section of the Customizer instead of an edit screen, at the top level or in the given panel. The values are saved in the theme mods, or in the given option. See [Settings pages](settings-pages.md#customizer-sections-without-a-settings-page).
 
 **Fields and tabs**
 
-- **`fields(array $fields)`**: Adds fields to the metabox. Accepts an array of field instances, including `Tab` and [`Column`](layout-fields.md#column) instances.
+- **`fields(array $fields)`**: Adds fields to the field group. Accepts an array of field instances, including `Tab` and [`Column`](layout-fields.md#column) instances.
 - **`geolocation(?string $apiKey = null, array $types = [], string|array $countries = [])`**: Fills the fields from an autocomplete address field (MB Geolocation). See [Extensions](extensions.md#geolocation).
 - **`tabStyle(string|TabStyle $style)`**: Sets the style of the tabs: `default`, `box` or `left` (Meta Box Tabs).
-- **`tabWrapper(bool $wrapper = true)`**: Set to `false` to remove the metabox wrapper around the tabs.
+- **`tabWrapper(bool $wrapper = true)`**: Set to `false` to remove the field group wrapper around the tabs.
 - **`tabDefaultActive(string $tabId)`**: Sets the tab active by default.
 - **`tabRemember(bool $remember = true)`**: Remembers the last active tab when saving.
 
@@ -70,10 +70,10 @@ Metabox::make('User Information', 'user_info')
 ```php
 <?php
 
+use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\Fields\Email;
-use Pollora\Metabox\Metabox;
 
-Metabox::make('Contact', 'contact')
+FieldGroup::make('Contact', 'contact')
     ->fields([
         Email::make('Email', 'email'),
     ])
@@ -85,7 +85,7 @@ Metabox::make('Contact', 'contact')
 
 ## Adding Fields
 
-Fields are added to a metabox using the `fields` method. The package supports a variety of field types, including text, number, textarea, and more. Each field type has its own set of methods for configuration.
+Fields are added to a field group using the `fields` method. The package supports a variety of field types, including text, number, textarea, and more. Each field type has its own set of methods for configuration.
 
 ### Field Types
 
@@ -102,7 +102,7 @@ Fields are added to a metabox using the `fields` method. The package supports a 
 use Pollora\Metabox\Fields\Textarea;
 use Pollora\Metabox\Fields\SingleImage;
 
-Metabox::make('Post Details', 'post_details')
+FieldGroup::make('Post Details', 'post_details')
     ->fields([
         Textarea::make('Description', 'description')
             ->rows(5)
@@ -122,7 +122,7 @@ The `setting()` method allows you to add any Meta Box-specific option that isn't
 ```php
 <?php
 
-Metabox::make('Advanced Metabox', 'advanced_metabox')
+FieldGroup::make('Advanced field group', 'advanced_field_group')
     ->setting('autosave', true)
     ->setting('validation', [
         'rules' => [
@@ -132,7 +132,7 @@ Metabox::make('Advanced Metabox', 'advanced_metabox')
             ]
         ]
     ])
-    ->setting('class', 'custom-metabox-class')
+    ->setting('class', 'custom-field-group-class')
     ->fields([
         Text::make('Custom Field', 'custom_field')
             ->setting('custom_attribute', 'custom_value'),
@@ -149,7 +149,7 @@ Text::make('Email', 'email')
 
 ## Setting the Location
 
-The `Location` class allows you to define where the metabox should appear based on specific conditions. You can use the `Location::where` method to specify these conditions.
+The `Location` class allows you to define where the field group should appear based on specific conditions. You can use the `Location::where` method to specify these conditions.
 
 ### Example
 
@@ -158,7 +158,7 @@ The `Location` class allows you to define where the metabox should appear based 
 
 use Pollora\Metabox\Location;
 
-Metabox::make('Custom Metabox', 'custom_metabox')
+FieldGroup::make('Custom field group', 'custom_field_group')
     ->location(Location::postTypes('page'))
     ->fields([
         Text::make('Page Title', 'page_title'),
@@ -167,12 +167,12 @@ Metabox::make('Custom Metabox', 'custom_metabox')
 
 ### Methods
 
-- **`Location::postTypes(string|array $postTypes)`**: Shows the metabox on the given post types.
-- **`Location::taxonomies(string|array $taxonomies)`**: Shows the metabox on terms of the given taxonomies (MB Term Meta).
-- **`Location::settingsPages(string|array $settingsPages, ?string $tab = null)`**: Shows the metabox on the given settings pages (MB Settings Page), in the given tab when the pages have tabs: `Location::settingsPages('theme-options', tab: 'general')`.
-- **`Location::models(string|array $models)`**: Shows the metabox on the screens of custom models, and stores its values in their table (MB Custom Table). See [Custom tables](custom-tables.md#custom-models).
-- **`Location::user()`**: Shows the metabox on user profiles (MB User Meta).
-- **`Location::comment()`**: Shows the metabox on comments (MB Comment Meta).
+- **`Location::postTypes(string|array $postTypes)`**: Shows the field group on the given post types.
+- **`Location::taxonomies(string|array $taxonomies)`**: Shows the field group on terms of the given taxonomies (MB Term Meta).
+- **`Location::settingsPages(string|array $settingsPages, ?string $tab = null)`**: Shows the field group on the given settings pages (MB Settings Page), in the given tab when the pages have tabs: `Location::settingsPages('theme-options', tab: 'general')`.
+- **`Location::models(string|array $models)`**: Shows the field group on the screens of custom models, and stores its values in their table (MB Custom Table). See [Custom tables](custom-tables.md#custom-models).
+- **`Location::user()`**: Shows the field group on user profiles (MB User Meta).
+- **`Location::comment()`**: Shows the field group on comments (MB Comment Meta).
 - **`andWhere(string $type, string|array $values)`**: Adds another condition with any Meta Box key.
 - **`Location::where(string $type, string|array $values)`**: Creates a condition with any Meta Box key. Note that Meta Box expects `post_types`, not `post_type`.
 - **`Location::default()`**: The location used when none is set: posts.

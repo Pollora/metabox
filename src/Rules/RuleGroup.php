@@ -26,7 +26,7 @@ final class RuleGroup
     }
 
     /**
-     * Build the settings Meta Box expects for a Metabox method.
+     * Build the settings Meta Box expects for a FieldGroup method.
      *
      * @param  string  $method  'include', 'exclude', 'show' or 'hide'.
      */
