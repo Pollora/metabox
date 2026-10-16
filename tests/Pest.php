@@ -14,7 +14,32 @@ declare(strict_types=1);
 
 function add_filter(string $hookName, callable $callback, int $priority = 10, int $acceptedArgs = 1): bool
 {
+    $GLOBALS['test_filters'][$hookName][] = $callback;
+
     return true;
+}
+
+/**
+ * Run the callbacks added to a filter, as WordPress does.
+ */
+function apply_filters(string $hookName, mixed $value): mixed
+{
+    $GLOBALS['test_doing_filters'][] = $hookName;
+
+    try {
+        foreach ($GLOBALS['test_filters'][$hookName] ?? [] as $callback) {
+            $value = $callback($value);
+        }
+    } finally {
+        array_pop($GLOBALS['test_doing_filters']);
+    }
+
+    return $value;
+}
+
+function did_filter(string $hookName): int
+{
+    return (int) in_array($hookName, $GLOBALS['test_did_filters'] ?? [], true);
 }
 
 $GLOBALS['wpdb'] = (object) ['prefix' => 'wp_'];
@@ -38,7 +63,7 @@ function doing_action(?string $hookName = null): bool
 
 function doing_filter(?string $hookName = null): bool
 {
-    return false;
+    return in_array($hookName, $GLOBALS['test_doing_filters'] ?? [], true);
 }
 
 function sanitize_title(string $title): string

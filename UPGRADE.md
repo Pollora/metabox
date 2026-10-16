@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From pollora/metabox 3.0 to 3.1
+
+Nothing needs to change: 3.1 adds the [attributes](docs/attributes.md). Classes declared with `make()` keep working, and both can be used in the same project.
+
 ## From pollora/metabox 2.6 to 3.0
 
 The `Metabox` class is now `FieldGroup`, the name MB Builder and ACF give to a set of fields: on a post edit screen it is displayed as a meta box, elsewhere as a section. Its methods are unchanged. `Block` now extends `FieldGroup`.
