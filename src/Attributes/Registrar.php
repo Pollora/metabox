@@ -185,6 +185,10 @@ final class Registrar
             }
         }
 
+        if ($declaration instanceof SettingsPage && $reflection->hasMethod('fields')) {
+            throw new LogicException("The settings page '{$class}' cannot have fields: declare a #[FieldGroup] with #[SettingsPages({$reflection->getShortName()}::class)].");
+        }
+
         if (! $declaration instanceof SettingsPage && ! $reflection->hasMethod('fields')) {
             throw new LogicException('The '.self::kind($declaration)." '{$class}' needs a fields() method returning its fields.");
         }
@@ -310,12 +314,8 @@ final class Registrar
             $builder->location($location);
         }
 
-        if ($builder instanceof BlockBuilder && $declaration instanceof Block) {
-            $view ??= self::$integration?->view($class, $declaration->id);
-
-            if ($view !== null) {
-                self::renderWith($builder, $view, $class);
-            }
+        if ($view !== null && $builder instanceof BlockBuilder) {
+            self::renderWith($builder, $view, $class);
         }
 
         $instance = null;
@@ -329,7 +329,19 @@ final class Registrar
             call_user_func([$instance ?? self::instance($class), 'configuring'], $builder);
         }
 
-        return $builder->build();
+        $settings = $builder->build();
+
+        // The default view of the integration applies to the blocks rendered in no other way.
+        if ($builder instanceof BlockBuilder && $declaration instanceof Block && ! isset($settings['render_callback']) && ! isset($settings['render_template'])) {
+            $default = self::$integration?->view($class, $declaration->id);
+
+            if ($default !== null) {
+                self::renderWith($builder, $default, $class);
+                $settings = $builder->build();
+            }
+        }
+
+        return $settings;
     }
 
     /**

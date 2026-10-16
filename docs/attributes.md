@@ -88,7 +88,7 @@ final class AdvancedQuote
 }
 ```
 
-A view needs an integration rendering it: pollora/metabox-bridge renders Blade views, and gives every block a default view and category. The view receives:
+A view needs an integration rendering it: pollora/metabox-bridge renders Blade views, and gives a default view to the blocks rendered in no other way, neither by `#[View]` nor by a render callback or template set in `configuring()`. The view receives:
 
 - `$attributes`: the field values, as stored, e.g. the ID of an image;
 - `$block`: the attributes of the block, with the formatted field values (`mb_get_block_field()`) and the `anchor`;
@@ -97,7 +97,7 @@ A view needs an integration rendering it: pollora/metabox-bridge renders Blade v
 
 ## Settings pages
 
-`#[SettingsPage(string $title, string $id)]` declares a settings page. Its fields are field groups displayed on it with `#[SettingsPages]`.
+`#[SettingsPage(string $title, string $id)]` declares a settings page. Its fields are field groups displayed on it with `#[SettingsPages]`: a `fields()` method on the page throws a `LogicException`.
 
 | Attribute | Equivalent |
 |---|---|

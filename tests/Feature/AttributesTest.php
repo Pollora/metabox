@@ -14,7 +14,9 @@ use Tests\Fixtures\Attributes\FooterOptions;
 use Tests\Fixtures\Attributes\Plain;
 use Tests\Fixtures\Attributes\PlainBlock;
 use Tests\Fixtures\Attributes\Quote;
+use Tests\Fixtures\Attributes\SettingsPageWithFields;
 use Tests\Fixtures\Attributes\SolutionFields;
+use Tests\Fixtures\Attributes\TemplateBlock;
 use Tests\Fixtures\Attributes\ThemeOptions;
 use Tests\Fixtures\Attributes\TwoDeclarations;
 use Tests\Fixtures\Attributes\UnresolvedTarget;
@@ -198,6 +200,7 @@ test('invalid declarations are rejected when registered', function (string $clas
     'no fields method' => [WithoutFields::class, 'needs a fields() method'],
     'two declarations' => [TwoDeclarations::class, 'must be declared with one #[FieldGroup], #[Block] or #[SettingsPage] attribute'],
     'setting of another kind' => [WrongSetting::class, 'does not apply to a field group'],
+    'fields on a settings page' => [SettingsPageWithFields::class, 'cannot have fields: declare a #[FieldGroup] with #[SettingsPages(SettingsPageWithFields::class)]'],
 ]);
 
 test('an unknown class is rejected', function () {
@@ -221,4 +224,12 @@ test('a field group registered after Meta Box read the declarations is rejected'
     $GLOBALS['test_did_filters'] = ['rwmb_meta_boxes'];
 
     expect(fn () => Registrar::register(Plain::class))->toThrow(LogicException::class, 'is registered too late');
+});
+
+test('the default view does not replace a template set in configuring()', function () {
+    Registrar::integrate(testIntegration());
+    Registrar::register(TemplateBlock::class);
+
+    expect(metaBoxes()[0])->toHaveKey('render_template', 'blocks/template.php')
+        ->not->toHaveKey('render_callback');
 });

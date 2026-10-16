@@ -171,3 +171,26 @@ final class CustomSetting
         return [];
     }
 }
+
+#[SettingsPage('Fields page', 'fields-page')]
+final class SettingsPageWithFields
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[Block('Template block', 'template-block')]
+final class TemplateBlock
+{
+    public function fields(): array
+    {
+        return [];
+    }
+
+    public function configuring(\Pollora\Metabox\Block $block): void
+    {
+        $block->renderTemplate('blocks/template.php');
+    }
+}
