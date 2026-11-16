@@ -13,3 +13,5 @@ coverage.xml
 *.swo
 .vscode/
 phpunit.xml
+# Pollora harness reports
+/.harness/

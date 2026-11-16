@@ -1,0 +1,12 @@
+{
+    "profile": "core",
+    "mode": "enforce",
+    "observed": [
+        "Rector"
+    ],
+    "ratchet": {
+        "phpstan_level": 5,
+        "phpstan_baseline": 0,
+        "coverage": 98.0
+    }
+}
