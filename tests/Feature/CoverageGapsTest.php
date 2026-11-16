@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Pollora\Metabox\Attributes\SettingsPage\Icon;
 use Pollora\Metabox\Block;
 use Pollora\Metabox\Enums\Priority;
 use Pollora\Metabox\FieldGroup;
@@ -136,4 +137,11 @@ test('settings page appends itself to the mb_settings_pages filter', function ()
         ->and($pages[0])->toMatchArray(['id' => 'gap_filter']);
 
     unset($GLOBALS['test_filters']['mb_settings_pages']);
+});
+
+test('the Icon attribute sets the settings page menu icon', function () {
+    $page = SettingsPage::make('Gap Icon Attr', 'gap_icon_attr');
+    (new Icon('admin-generic'))->configure($page);
+
+    expect($page->build()['icon_url'])->toBe('dashicons-admin-generic');
 });
