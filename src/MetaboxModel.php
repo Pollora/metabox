@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox;
 
-use Exception;
 use LogicException;
 use Pollora\Metabox\CustomTable\TableName;
 use Pollora\Metabox\Enums\ModelSupport;
+use Pollora\Metabox\Exception\WordPressNotLoadedException;
 use Pollora\Metabox\Validation\OptionValidation;
 
 /**
@@ -50,7 +50,7 @@ class MetaboxModel
     public function __construct(protected string $name)
     {
         if (! function_exists('add_action')) {
-            throw new Exception('Metabox Maker requires WordPress to be loaded.');
+            throw WordPressNotLoadedException::forMetaboxMaker();
         }
 
         if (isset(static::$models[$name])) {

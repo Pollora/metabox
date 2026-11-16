@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox;
 
-use Exception;
 use InvalidArgumentException;
 use Pollora\Metabox\Contract\Renderable;
 use Pollora\Metabox\Enums\IconType;
 use Pollora\Metabox\Enums\SettingsPageStyle;
 use Pollora\Metabox\Enums\TabStyle;
+use Pollora\Metabox\Exception\WordPressNotLoadedException;
 use Pollora\Metabox\Transformer\EmptyValueFilter;
 use Pollora\Metabox\Validation\OptionValidation;
 
@@ -137,7 +137,7 @@ class SettingsPage implements Renderable
     public function __construct(protected string $page_title, protected string $id)
     {
         if (! function_exists('add_filter')) {
-            throw new Exception('Metabox Maker requires WordPress to be loaded.');
+            throw WordPressNotLoadedException::forMetaboxMaker();
         }
 
         $this->menu_title = $page_title;

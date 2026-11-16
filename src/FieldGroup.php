@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox;
 
-use Exception;
 use InvalidArgumentException;
 use LogicException;
 use Pollora\Metabox\Contract\Renderable;
@@ -14,6 +13,7 @@ use Pollora\Metabox\Enums\Context;
 use Pollora\Metabox\Enums\Priority;
 use Pollora\Metabox\Enums\TabStyle;
 use Pollora\Metabox\Enums\ToggleType;
+use Pollora\Metabox\Exception\WordPressNotLoadedException;
 use Pollora\Metabox\Fields\Field;
 use Pollora\Metabox\Fields\Settings\ConditionalLogic;
 use Pollora\Metabox\Rules\Rule;
@@ -196,7 +196,7 @@ class FieldGroup implements Renderable
     public function __construct(protected string $id, protected string $title)
     {
         if (! function_exists('add_filter')) {
-            throw new Exception('Metabox Maker requires WordPress to be loaded.');
+            throw WordPressNotLoadedException::forMetaboxMaker();
         }
 
         if (! doing_filter('rwmb_meta_boxes')) {
