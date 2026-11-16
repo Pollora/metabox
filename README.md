@@ -21,7 +21,7 @@ Metabox declares [Meta Box](https://metabox.io) meta boxes, custom fields, Guten
 composer require pollora/metabox
 ```
 
-Requires PHP 8.2+, WordPress and the [Meta Box](https://wordpress.org/plugins/meta-box/) plugin. Some features need a Meta Box extension: [MB Blocks](https://docs.metabox.io/extensions/mb-blocks/) for blocks, [MB Settings Page](https://docs.metabox.io/extensions/mb-settings-page/) for settings pages, [Meta Box Group](https://docs.metabox.io/extensions/meta-box-group/) for groups and [Meta Box Tabs](https://docs.metabox.io/extensions/meta-box-tabs/) for tabs. They are all included in Meta Box AIO.
+Requires PHP 8.3+, WordPress and the [Meta Box](https://wordpress.org/plugins/meta-box/) plugin. Some features need a Meta Box extension: [MB Blocks](https://docs.metabox.io/extensions/mb-blocks/) for blocks, [MB Settings Page](https://docs.metabox.io/extensions/mb-settings-page/) for settings pages, [Meta Box Group](https://docs.metabox.io/extensions/meta-box-group/) for groups and [Meta Box Tabs](https://docs.metabox.io/extensions/meta-box-tabs/) for tabs. They are all included in Meta Box AIO.
 
 Coming from `amphibee/metabox-maker`? Read the [upgrade guide](UPGRADE.md).
 

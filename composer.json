@@ -24,7 +24,7 @@
         "source": "https://github.com/Pollora/metabox"
     },
     "require": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
     "require-dev": {
         "pestphp/pest": "^3.0",
@@ -32,7 +32,8 @@
         "nunomaduro/phpinsights": "^2.8",
         "laravel/pint": "^1.22",
         "phpstan/phpstan": "^2.1",
-        "szepeviktor/phpstan-wordpress": "^2.0"
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "pollora/harness": "^0.1.23"
     },
     "autoload": {
         "psr-4": {
@@ -50,7 +51,9 @@
         "phpstan": "phpstan analyse",
         "phpstan:ci": "phpstan analyse --no-progress",
         "lint": "pint",
-        "lint:check": "pint --test"
+        "lint:check": "pint --test",
+        "qa": "@php vendor/bin/pollora-qa check",
+        "qa:fast": "@php vendor/bin/pollora-qa check --fast"
     },
     "extra": {
         "branch-alias": {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox;
 
-use Exception;
 use LogicException;
 use MB_Relationships_API;
+use Pollora\Metabox\Exception\WordPressNotLoadedException;
 use Pollora\Metabox\Relationships\Side;
 
 /**
@@ -35,7 +35,7 @@ class Relationship
     public function __construct(protected string $id)
     {
         if (! function_exists('add_action')) {
-            throw new Exception('Metabox Maker requires WordPress to be loaded.');
+            throw WordPressNotLoadedException::forMetaboxMaker();
         }
 
         if (isset(static::$declared[$id])) {
