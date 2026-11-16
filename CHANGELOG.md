@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Requires PHP 8.3 or later (PHP 8.2 is no longer supported).
+
 ## 3.1.0 - 2026-10-16
 
 ### Added
