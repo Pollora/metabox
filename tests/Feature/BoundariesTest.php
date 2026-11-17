@@ -48,6 +48,10 @@ function setStatic(string $class, string $property, mixed $value): mixed
     return $previous;
 }
 
+afterEach(function () {
+    unset($GLOBALS['test_did_actions'], $GLOBALS['test_doing_actions'], $GLOBALS['test_actions']);
+});
+
 describe('grid sizes', function () {
     test('a field spans 1 to 12 columns', function (int $columns) {
         expect(Text::make('A', 'a')->columns($columns)->build())->toHaveKey('columns', $columns);
