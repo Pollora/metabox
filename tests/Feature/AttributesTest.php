@@ -11,6 +11,7 @@ use Pollora\Metabox\SettingsPage;
 use Tests\Fixtures\Attributes\BlockWithoutFields;
 use Tests\Fixtures\Attributes\BlockWithPageSetting;
 use Tests\Fixtures\Attributes\CamelCaseName;
+use Tests\Fixtures\Attributes\ClosedBlock;
 use Tests\Fixtures\Attributes\ConfiguredBlock;
 use Tests\Fixtures\Attributes\CustomBlock;
 use Tests\Fixtures\Attributes\CustomPage;
@@ -22,6 +23,7 @@ use Tests\Fixtures\Attributes\DuplicatePage;
 use Tests\Fixtures\Attributes\Event;
 use Tests\Fixtures\Attributes\EventTarget;
 use Tests\Fixtures\Attributes\FooterOptions;
+use Tests\Fixtures\Attributes\ForeignFirst;
 use Tests\Fixtures\Attributes\GroupedBlock;
 use Tests\Fixtures\Attributes\GroupSharingPageId;
 use Tests\Fixtures\Attributes\LatePage;
@@ -432,4 +434,16 @@ test('the render callback is not a preview by default and casts the flag', funct
         ->and($integration->rendered[0][1]['postId'])->toBeNull()
         ->and($integration->rendered[1][1]['isPreview'])->toBeTrue()
         ->and($integration->rendered[1][1]['postId'])->toBe(5);
+});
+
+test('a block accepts the settings of a field group', function () {
+    Registrar::register(ClosedBlock::class);
+
+    expect(metaBoxes()[0]['closed'])->toBeTrue();
+});
+
+test('the settings after an attribute that is not one are still applied', function () {
+    Registrar::register(ForeignFirst::class);
+
+    expect(metaBoxes()[0]['post_types'])->toBe(['page']);
 });

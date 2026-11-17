@@ -24,6 +24,7 @@ use Pollora\Metabox\Relationships\Side;
 use Pollora\Metabox\Rules\Rule;
 use Pollora\Metabox\Services\BlockTypeFilter;
 use Pollora\Metabox\SettingsPage;
+use Pollora\Metabox\Validation\OptionValidation;
 
 /**
  * The message of the exception thrown by a callback.
@@ -389,5 +390,14 @@ describe('conditional logic', function () {
 
         expect(messageOf(fn () => Text::make('A', 'a')->orVisibleWhen('x', 1)->orVisibleWhen('y', 2)->visibleWhen('z', 3)))->toBe($message)
             ->and(messageOf(fn () => Text::make('A', 'a')->visibleWhen('x', 1)->visibleWhen('y', 2)->orVisibleWhen('z', 3)))->toBe($message);
+    });
+});
+
+describe('option validation', function () {
+    test('an invalid enum class and a non string value are refused', function () {
+        expect(messageOf(fn () => OptionValidation::check('x', 'Missing\\EnumClass')))
+            ->toBe('Invalid enum class: Missing\\EnumClass')
+            ->and(messageOf(fn () => OptionValidation::check(5, Context::class)))
+            ->toBe('Type must be either a string or an instance of '.Context::class.'.');
     });
 });

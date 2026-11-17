@@ -374,3 +374,24 @@ final class ConfiguredBlock
         $block->category($this->origin);
     }
 }
+
+#[Block('Closed block', 'closed-block')]
+#[Closed]
+final class ClosedBlock
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Foreign first', 'foreign_first')]
+#[\AllowDynamicProperties]
+#[PostTypes('page')]
+final class ForeignFirst
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
