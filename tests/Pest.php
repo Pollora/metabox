@@ -15,6 +15,7 @@ declare(strict_types=1);
 function add_filter(string $hookName, callable $callback, int $priority = 10, int $acceptedArgs = 1): bool
 {
     $GLOBALS['test_filters'][$hookName][] = $callback;
+    $GLOBALS['test_filter_registrations'][] = [$hookName, $priority, $acceptedArgs];
 
     return true;
 }

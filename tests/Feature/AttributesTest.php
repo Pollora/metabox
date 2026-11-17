@@ -4,15 +4,34 @@ declare(strict_types=1);
 
 use Pollora\Metabox\Attributes\Contracts\Integration;
 use Pollora\Metabox\Attributes\Registrar;
+use Pollora\Metabox\AttributesExtra\WithMarker;
 use Pollora\Metabox\Block;
 use Pollora\Metabox\FieldGroup;
 use Pollora\Metabox\SettingsPage;
+use Tests\Fixtures\Attributes\BlockWithoutFields;
+use Tests\Fixtures\Attributes\BlockWithPageSetting;
+use Tests\Fixtures\Attributes\CamelCaseName;
+use Tests\Fixtures\Attributes\ClosedBlock;
+use Tests\Fixtures\Attributes\ConfiguredBlock;
+use Tests\Fixtures\Attributes\CustomBlock;
+use Tests\Fixtures\Attributes\CustomPage;
 use Tests\Fixtures\Attributes\CustomSetting;
+use Tests\Fixtures\Attributes\DualGroup;
+use Tests\Fixtures\Attributes\DualPage;
 use Tests\Fixtures\Attributes\DuplicateId;
+use Tests\Fixtures\Attributes\DuplicatePage;
 use Tests\Fixtures\Attributes\Event;
+use Tests\Fixtures\Attributes\EventTarget;
 use Tests\Fixtures\Attributes\FooterOptions;
+use Tests\Fixtures\Attributes\ForeignFirst;
+use Tests\Fixtures\Attributes\GroupedBlock;
+use Tests\Fixtures\Attributes\GroupSharingPageId;
+use Tests\Fixtures\Attributes\LatePage;
+use Tests\Fixtures\Attributes\MultiTargets;
+use Tests\Fixtures\Attributes\PageWithTarget;
 use Tests\Fixtures\Attributes\Plain;
 use Tests\Fixtures\Attributes\PlainBlock;
+use Tests\Fixtures\Attributes\Prebuilt;
 use Tests\Fixtures\Attributes\Quote;
 use Tests\Fixtures\Attributes\SettingsPageWithFields;
 use Tests\Fixtures\Attributes\SolutionFields;
@@ -21,6 +40,7 @@ use Tests\Fixtures\Attributes\ThemeOptions;
 use Tests\Fixtures\Attributes\TwoDeclarations;
 use Tests\Fixtures\Attributes\UnresolvedTarget;
 use Tests\Fixtures\Attributes\ViewWithoutIntegration;
+use Tests\Fixtures\Attributes\WithForeignAttribute;
 use Tests\Fixtures\Attributes\WithoutFields;
 use Tests\Fixtures\Attributes\WrongSetting;
 
@@ -232,4 +252,198 @@ test('the default view does not replace a template set in configuring()', functi
 
     expect(metaBoxes()[0])->toHaveKey('render_template', 'blocks/template.php')
         ->not->toHaveKey('render_callback');
+});
+
+/**
+ * The message of the exception thrown by a callback.
+ */
+function thrownMessage(callable $callback): string
+{
+    try {
+        $callback();
+    } catch (Throwable $e) {
+        return $e->getMessage();
+    }
+
+    return '';
+}
+
+/**
+ * An integration handing out a prepared instance, with no view and no slug.
+ */
+function instanceIntegration(object $instance): Integration
+{
+    return new class($instance) implements Integration
+    {
+        public function __construct(private readonly object $instance) {}
+
+        public function instance(string $class): object
+        {
+            return $this->instance;
+        }
+
+        public function configure(FieldGroup|SettingsPage $builder, string $class): void {}
+
+        public function slug(string $class, string $key): ?string
+        {
+            return null;
+        }
+
+        public function view(string $class, string $blockId): ?string
+        {
+            return null;
+        }
+
+        public function render(string $view, array $data): string
+        {
+            return '';
+        }
+    };
+}
+
+test('a class registered twice does not stop the next ones from being registered', function () {
+    Registrar::register(Plain::class, Plain::class, SolutionFields::class);
+
+    expect(array_keys(Registrar::registered()))->toBe([Plain::class, SolutionFields::class]);
+});
+
+test('a settings page can be registered after Meta Box read the declarations', function () {
+    $GLOBALS['test_did_filters'] = ['rwmb_meta_boxes'];
+
+    Registrar::register(LatePage::class);
+
+    expect(Registrar::registered())->toHaveKey(LatePage::class);
+});
+
+test('field groups and settings pages are given to their own filter only', function () {
+    Registrar::register(SolutionFields::class, ThemeOptions::class);
+
+    expect(array_column(metaBoxes(), 'id'))->toBe(['solution_fields'])
+        ->and(array_column(apply_filters('mb_settings_pages', []), 'id'))->toBe(['theme-options']);
+});
+
+test('the filters leave what is not a list untouched', function () {
+    Registrar::register(SolutionFields::class);
+
+    expect(Registrar::metaBoxes('x'))->toBe('x')
+        ->and(Registrar::settingsPages(null))->toBeNull();
+});
+
+test('the messages of the invalid attribute declarations are complete', function () {
+    expect(thrownMessage(fn () => Registrar::register(WrongSetting::class)))
+        ->toBe("The attribute #[Pollora\\Metabox\\Attributes\\Block\\Icon] of 'Tests\\Fixtures\\Attributes\\WrongSetting' does not apply to a field group.")
+        ->and(thrownMessage(fn () => Registrar::register(BlockWithPageSetting::class)))
+        ->toBe("The attribute #[Pollora\\Metabox\\Attributes\\SettingsPage\\Position] of 'Tests\\Fixtures\\Attributes\\BlockWithPageSetting' does not apply to a block.")
+        ->and(thrownMessage(fn () => Registrar::register(PageWithTarget::class)))
+        ->toBe("The attribute #[Pollora\\Metabox\\Attributes\\FieldGroup\\PostTypes] of 'Tests\\Fixtures\\Attributes\\PageWithTarget' does not apply to a settings page.");
+});
+
+test('the message of a missing fields method names the kind of declaration', function () {
+    expect(thrownMessage(fn () => Registrar::register(WithoutFields::class)))
+        ->toBe("The field group 'Tests\\Fixtures\\Attributes\\WithoutFields' needs a fields() method returning its fields.")
+        ->and(thrownMessage(fn () => Registrar::register(BlockWithoutFields::class)))
+        ->toBe("The block 'Tests\\Fixtures\\Attributes\\BlockWithoutFields' needs a fields() method returning its fields.");
+});
+
+test('an attribute of a namespace starting like the package one is not a setting', function () {
+    require_once __DIR__.'/../Fixtures/AttributesExtra.php';
+
+    Registrar::register(WithMarker::class);
+
+    expect(Registrar::registered())->toHaveKey(WithMarker::class);
+});
+
+test('an unrelated attribute of an existing class is not a setting', function () {
+    Registrar::register(WithForeignAttribute::class);
+
+    expect(metaBoxes()[0]['id'])->toBe('allow_dynamic');
+});
+
+test('custom settings are applied to the kind of declaration they implement', function () {
+    Registrar::register(CustomBlock::class, DualGroup::class, GroupedBlock::class, CustomPage::class, DualPage::class);
+
+    $blocks = array_column(metaBoxes(), null, 'id');
+    $pages = array_column(apply_filters('mb_settings_pages', []), null, 'id');
+
+    expect($blocks['custom-block']['category'])->toBe('custom-category')
+        ->and($blocks['dual_group']['closed'])->toBeTrue()
+        ->and($blocks)->toHaveKey('grouped-block')
+        ->and($pages['plain-page']['position'])->toBe(9)
+        ->and($pages['custom-page']['position'])->toBe(7);
+});
+
+test('an ID is unique among the settings pages, but shared by a page and a field group', function () {
+    Registrar::register(ThemeOptions::class, GroupSharingPageId::class);
+
+    expect(array_keys(Registrar::registered()))->toBe([ThemeOptions::class, GroupSharingPageId::class])
+        ->and(thrownMessage(fn () => Registrar::register(DuplicatePage::class)))
+        ->toBe("The ID 'theme-options' of 'Tests\\Fixtures\\Attributes\\DuplicatePage' is already used by 'Tests\\Fixtures\\Attributes\\ThemeOptions'.");
+});
+
+test('a field group without an ID gets its class name in snake case', function () {
+    Registrar::register(CamelCaseName::class);
+
+    expect(metaBoxes()[0]['id'])->toBe('camel_case_name');
+});
+
+test('the targets of the same kind are merged', function () {
+    Registrar::register(MultiTargets::class);
+
+    expect(metaBoxes()[0])->toMatchArray(['post_types' => ['post', 'page', 'book'], 'taxonomies' => ['genre']]);
+});
+
+test('a block without a view and without integration has no render callback', function () {
+    Registrar::register(PlainBlock::class);
+
+    expect(metaBoxes()[0])->not->toHaveKey('render_callback');
+});
+
+test('a class target needs an integration to be resolved', function () {
+    Registrar::register(EventTarget::class);
+
+    expect(thrownMessage(fn () => metaBoxes()))
+        ->toBe("The class 'Tests\\Fixtures\\Attributes\\Event', target of 'Tests\\Fixtures\\Attributes\\EventTarget', does not declare any post types.");
+});
+
+test('the instance of the integration is the one used for fields and configuring', function () {
+    Registrar::integrate(instanceIntegration(new Prebuilt('from integration')));
+    Registrar::register(Prebuilt::class);
+
+    expect(metaBoxes()[0]['fields'][0]['name'])->toBe('from integration');
+
+    Registrar::reset();
+    Registrar::integrate(instanceIntegration(new ConfiguredBlock('integration-category')));
+    Registrar::register(ConfiguredBlock::class);
+
+    expect(metaBoxes()[0]['category'])->toBe('integration-category');
+});
+
+test('the render callback is not a preview by default and casts the flag', function () {
+    $integration = testIntegration();
+    Registrar::integrate($integration);
+    Registrar::register(Quote::class);
+
+    $callback = metaBoxes()[0]['render_callback'];
+
+    ob_start();
+    $callback(['data' => []]);
+    $callback(['data' => []], 1, 5);
+    ob_end_clean();
+
+    expect($integration->rendered[0][1]['isPreview'])->toBeFalse()
+        ->and($integration->rendered[0][1]['postId'])->toBeNull()
+        ->and($integration->rendered[1][1]['isPreview'])->toBeTrue()
+        ->and($integration->rendered[1][1]['postId'])->toBe(5);
+});
+
+test('a block accepts the settings of a field group', function () {
+    Registrar::register(ClosedBlock::class);
+
+    expect(metaBoxes()[0]['closed'])->toBeTrue();
+});
+
+test('the settings after an attribute that is not one are still applied', function () {
+    Registrar::register(ForeignFirst::class);
+
+    expect(metaBoxes()[0]['post_types'])->toBe(['page']);
 });

@@ -11,7 +11,9 @@ use Pollora\Metabox\Attributes\Block\Description;
 use Pollora\Metabox\Attributes\Block\Icon;
 use Pollora\Metabox\Attributes\Block\Mode;
 use Pollora\Metabox\Attributes\Block\View;
+use Pollora\Metabox\Attributes\Contracts\BlockSetting;
 use Pollora\Metabox\Attributes\Contracts\FieldGroupSetting;
+use Pollora\Metabox\Attributes\Contracts\SettingsPageSetting;
 use Pollora\Metabox\Attributes\FieldGroup;
 use Pollora\Metabox\Attributes\FieldGroup\PostTypes;
 use Pollora\Metabox\Attributes\FieldGroup\SettingsPages;
@@ -192,5 +194,204 @@ final class TemplateBlock
     public function configuring(\Pollora\Metabox\Block $block): void
     {
         $block->renderTemplate('blocks/template.php');
+    }
+}
+
+#[Attribute(Attribute::TARGET_CLASS)]
+final readonly class BlockOnly implements BlockSetting
+{
+    public function configure(\Pollora\Metabox\Block $block): void
+    {
+        $block->category('custom-category');
+    }
+}
+
+#[Attribute(Attribute::TARGET_CLASS)]
+final readonly class GroupAndBlock implements BlockSetting, FieldGroupSetting
+{
+    public function configure(\Pollora\Metabox\FieldGroup|\Pollora\Metabox\Block $group): void
+    {
+        if (! $group instanceof \Pollora\Metabox\Block) {
+            $group->closed(true);
+        }
+    }
+}
+
+#[Attribute(Attribute::TARGET_CLASS)]
+final readonly class GroupAndPage implements FieldGroupSetting, SettingsPageSetting
+{
+    public function configure(\Pollora\Metabox\FieldGroup|\Pollora\Metabox\SettingsPage $target): void
+    {
+        if ($target instanceof \Pollora\Metabox\SettingsPage) {
+            $target->position(7);
+        }
+    }
+}
+
+#[Attribute(Attribute::TARGET_CLASS)]
+final readonly class PageOnly implements SettingsPageSetting
+{
+    public function configure(\Pollora\Metabox\SettingsPage $page): void
+    {
+        $page->position(9);
+    }
+}
+
+#[Block('Custom block', 'custom-block')]
+#[BlockOnly]
+final class CustomBlock
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[Block('Grouped block', 'grouped-block')]
+#[GroupAndBlock]
+final class GroupedBlock
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Dual group', 'dual_group')]
+#[GroupAndBlock]
+final class DualGroup
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[SettingsPage('Custom page', 'custom-page')]
+#[GroupAndPage]
+final class DualPage {}
+
+#[SettingsPage('Plain page', 'plain-page')]
+#[PageOnly]
+final class CustomPage {}
+
+#[SettingsPage('Theme options again', 'theme-options')]
+final class DuplicatePage {}
+
+#[FieldGroup('Same ID as a page', 'theme-options')]
+final class GroupSharingPageId
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[SettingsPage('Late page', 'late-page')]
+final class LatePage {}
+
+#[Block('No fields block', 'no-fields-block')]
+final class BlockWithoutFields {}
+
+#[Block('Page position', 'page-position')]
+#[Position(3)]
+final class BlockWithPageSetting
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[SettingsPage('Targeted page', 'targeted-page')]
+#[PostTypes('page')]
+final class PageWithTarget {}
+
+#[FieldGroup('Allow dynamic', 'allow_dynamic')]
+#[\AllowDynamicProperties]
+final class WithForeignAttribute
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Multi targets', 'multi_targets')]
+#[PostTypes('post')]
+#[PostTypes('page', 'book')]
+#[Taxonomies('genre')]
+final class MultiTargets
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Camel')]
+final class CamelCaseName
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Event group', 'event_group')]
+#[PostTypes(Event::class)]
+final class EventTarget
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Prebuilt', 'prebuilt')]
+final class Prebuilt
+{
+    public function __construct(public string $origin = 'new') {}
+
+    public function fields(): array
+    {
+        return [Text::make($this->origin, 'origin')];
+    }
+}
+
+#[Block('Configured block', 'configured-block')]
+final class ConfiguredBlock
+{
+    public function __construct(public string $origin = 'new') {}
+
+    public function fields(): array
+    {
+        return [];
+    }
+
+    public function configuring(\Pollora\Metabox\Block $block): void
+    {
+        $block->category($this->origin);
+    }
+}
+
+#[Block('Closed block', 'closed-block')]
+#[Closed]
+final class ClosedBlock
+{
+    public function fields(): array
+    {
+        return [];
+    }
+}
+
+#[FieldGroup('Foreign first', 'foreign_first')]
+#[\AllowDynamicProperties]
+#[PostTypes('page')]
+final class ForeignFirst
+{
+    public function fields(): array
+    {
+        return [];
     }
 }
