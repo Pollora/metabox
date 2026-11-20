@@ -33,7 +33,7 @@
         "laravel/pint": "^1.22",
         "phpstan/phpstan": "^2.1",
         "szepeviktor/phpstan-wordpress": "^2.0",
-        "pollora/harness": "^0.1.32"
+        "pollora/harness": "^0.1.33"
     },
     "autoload": {
         "psr-4": {
