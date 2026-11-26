@@ -23,7 +23,7 @@ final class EnumTransformer
     {
         $enumValue = $enumClass::tryFrom($value);
         if ($enumValue === null) {
-            if (! $errorMessage) {
+            if (! is_string($errorMessage) || ! $errorMessage) {
                 $errorMessage = Enum::generateErrorMessageFromEnumValues($enumClass);
             }
             throw new InvalidArgumentException($errorMessage);

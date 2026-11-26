@@ -51,7 +51,7 @@ trait Clonable
      */
     public function cloneable(?bool $clone = true): static
     {
-        $this->clone = $clone;
+        $this->clone = (bool) $clone;
 
         return $this;
     }
