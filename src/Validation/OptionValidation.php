@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox\Validation;
 
+use BackedEnum;
 use InvalidArgumentException;
 use Pollora\Metabox\Transformer\EnumTransformer;
 
@@ -27,7 +28,7 @@ final class OptionValidation
     {
         EnumValidation::validateEnumClass($enumClass);
 
-        if ($value instanceof $enumClass) {
+        if ($value instanceof $enumClass && $value instanceof BackedEnum && is_string($value->value)) {
             return $value->value;
         }
 

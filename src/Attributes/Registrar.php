@@ -322,11 +322,11 @@ final class Registrar
 
         if ($builder instanceof FieldGroupBuilder) {
             $instance = self::instance($class);
-            $builder->fields(call_user_func([$instance, 'fields']));
+            $builder->fields(self::declaredFields($instance, $class));
         }
 
-        if (method_exists($class, 'configuring')) {
-            call_user_func([$instance ?? self::instance($class), 'configuring'], $builder);
+        if (method_exists($class, 'configuring') && method_exists($configured = $instance ?? self::instance($class), 'configuring')) {
+            $configured->configuring($builder);
         }
 
         $settings = $builder->build();
@@ -342,6 +342,19 @@ final class Registrar
         }
 
         return $settings;
+    }
+
+    /**
+     * The fields of a declaration, from the object the integration built for its class.
+     *
+     * @param  class-string  $class
+     * @return array<mixed>
+     */
+    private static function declaredFields(object $instance, string $class): array
+    {
+        $fields = method_exists($instance, 'fields') ? $instance->fields() : null;
+
+        return is_array($fields) ? $fields : throw new LogicException("The fields() method of '{$class}' must return an array of fields.");
     }
 
     /**

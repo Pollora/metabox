@@ -76,3 +76,8 @@ test('timepicker boolean toggles default to true', function () {
 
     expect($built['js_options'])->toBe(['showHour' => true, 'oneLine' => true, 'timeOnly' => true, 'isRTL' => true]);
 });
+
+test('an editor setting cannot be added to options given as a string', function () {
+    expect(fn () => Wysiwyg::make('Body', 'body')->options('https://example.test')->wpautop(true))
+        ->toThrow(LogicException::class, "'wpautop'");
+});

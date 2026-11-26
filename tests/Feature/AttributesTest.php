@@ -447,3 +447,16 @@ test('the settings after an attribute that is not one are still applied', functi
 
     expect(metaBoxes()[0]['post_types'])->toBe(['page']);
 });
+
+test('an instance of the integration whose fields are not an array is reported', function () {
+    Registrar::integrate(instanceIntegration(new class
+    {
+        public function fields(): string
+        {
+            return 'none';
+        }
+    }));
+    Registrar::register(Prebuilt::class);
+
+    expect(fn () => metaBoxes())->toThrow(LogicException::class, 'must return an array of fields');
+});

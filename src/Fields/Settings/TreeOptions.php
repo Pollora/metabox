@@ -34,24 +34,25 @@ trait TreeOptions
      */
     public function tree(array $tree): static
     {
-        $this->options = [];
         $this->flatten = false;
-        $this->addTreeOptions($tree, null);
+        $this->options = $this->treeOptions($tree, null, []);
 
         return $this;
     }
 
     /**
-     * Add the options of a tree level, in the Meta Box format.
+     * Add the options of a tree level to those collected so far, in the Meta Box format.
      *
      * @param  array<mixed>  $tree
+     * @param  list<array<string, mixed>>  $options
+     * @return list<array<string, mixed>>
      */
-    private function addTreeOptions(array $tree, ?string $parent): void
+    private function treeOptions(array $tree, ?string $parent, array $options): array
     {
         foreach ($tree as $value => $option) {
             $value = (string) $value;
 
-            if (in_array($value, array_column($this->options, 'value'), true)) {
+            if (in_array($value, array_column($options, 'value'), true)) {
                 throw new InvalidArgumentException("The option '{$value}' is defined twice in the tree.");
             }
 
@@ -63,15 +64,17 @@ trait TreeOptions
                 throw new InvalidArgumentException("The option '{$value}' must be a label, or an array with a 'label' and its 'children'.");
             }
 
-            $this->options[] = array_filter([
+            $options[] = array_filter([
                 'value' => $value,
                 'label' => is_array($option) ? $option['label'] : $option,
                 'parent' => $parent,
             ], fn ($item) => $item !== null);
 
             if (is_array($option)) {
-                $this->addTreeOptions($option['children'] ?? [], $value);
+                $options = $this->treeOptions($option['children'] ?? [], $value, $options);
             }
         }
+
+        return $options;
     }
 }

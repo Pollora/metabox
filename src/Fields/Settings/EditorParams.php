@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox\Fields\Settings;
 
+use LogicException;
+
 /**
  * Trait to configure settings for WordPress WYSIWYG editors explicitly.
  */
@@ -18,9 +20,7 @@ trait EditorParams
      */
     public function wpautop(bool $use): static
     {
-        $this->options['wpautop'] = $use;
-
-        return $this;
+        return $this->editorSetting('wpautop', $use);
     }
 
     /**
@@ -30,9 +30,7 @@ trait EditorParams
      */
     public function mediaButtons(bool $show): static
     {
-        $this->options['media_buttons'] = $show;
-
-        return $this;
+        return $this->editorSetting('media_buttons', $show);
     }
 
     /**
@@ -42,9 +40,7 @@ trait EditorParams
      */
     public function defaultEditor(string $editor): static
     {
-        $this->options['default_editor'] = $editor;
-
-        return $this;
+        return $this->editorSetting('default_editor', $editor);
     }
 
     /**
@@ -54,9 +50,7 @@ trait EditorParams
      */
     public function dragDropUpload(bool $enable): static
     {
-        $this->options['drag_drop_upload'] = $enable;
-
-        return $this;
+        return $this->editorSetting('drag_drop_upload', $enable);
     }
 
     /**
@@ -66,9 +60,7 @@ trait EditorParams
      */
     public function textareaName(string $name): static
     {
-        $this->options['textarea_name'] = $name;
-
-        return $this;
+        return $this->editorSetting('textarea_name', $name);
     }
 
     /**
@@ -78,9 +70,7 @@ trait EditorParams
      */
     public function textareaRows(int $rows): static
     {
-        $this->options['textarea_rows'] = $rows;
-
-        return $this;
+        return $this->editorSetting('textarea_rows', $rows);
     }
 
     /**
@@ -90,9 +80,7 @@ trait EditorParams
      */
     public function tabindex(int $index): static
     {
-        $this->options['tabindex'] = $index;
-
-        return $this;
+        return $this->editorSetting('tabindex', $index);
     }
 
     /**
@@ -102,9 +90,7 @@ trait EditorParams
      */
     public function tabfocusElements(string $elements): static
     {
-        $this->options['tabfocus_elements'] = $elements;
-
-        return $this;
+        return $this->editorSetting('tabfocus_elements', $elements);
     }
 
     /**
@@ -114,9 +100,7 @@ trait EditorParams
      */
     public function editorCss(string $css): static
     {
-        $this->options['editor_css'] = $css;
-
-        return $this;
+        return $this->editorSetting('editor_css', $css);
     }
 
     /**
@@ -126,9 +110,7 @@ trait EditorParams
      */
     public function editorClass(string $class): static
     {
-        $this->options['editor_class'] = $class;
-
-        return $this;
+        return $this->editorSetting('editor_class', $class);
     }
 
     /**
@@ -138,9 +120,7 @@ trait EditorParams
      */
     public function teeny(bool $useTeeny): static
     {
-        $this->options['teeny'] = $useTeeny;
-
-        return $this;
+        return $this->editorSetting('teeny', $useTeeny);
     }
 
     /**
@@ -150,9 +130,7 @@ trait EditorParams
      */
     public function tinymce(array $settings): static
     {
-        $this->options['tinymce'] = $settings;
-
-        return $this;
+        return $this->editorSetting('tinymce', $settings);
     }
 
     /**
@@ -162,9 +140,7 @@ trait EditorParams
      */
     public function quicktags(array $settings): static
     {
-        $this->options['quicktags'] = $settings;
-
-        return $this;
+        return $this->editorSetting('quicktags', $settings);
     }
 
     /**
@@ -172,7 +148,24 @@ trait EditorParams
      */
     public function distractionFreeWriting(bool $enabled = true): static
     {
-        $this->options['dfw'] = $enabled;
+        return $this->editorSetting('dfw', $enabled);
+    }
+
+    /**
+     * Set one setting of the editor, kept with the other options of the field.
+     *
+     * @throws LogicException If the options were given as a string, which cannot hold a setting.
+     */
+    private function editorSetting(string $key, mixed $value): static
+    {
+        $options = $this->options ?? [];
+
+        if (is_string($options)) {
+            throw new LogicException("The editor setting '{$key}' cannot be added to options given as a string.");
+        }
+
+        $options[$key] = $value;
+        $this->options = $options;
 
         return $this;
     }

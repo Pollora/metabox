@@ -29,7 +29,11 @@ final class TableName
     {
         global $wpdb;
 
-        $table = self::isModelClass($this->table) ? (new $this->table)->getTable() : $this->table;
+        $table = $this->table;
+
+        if (class_exists($table) && method_exists($table, 'getTable')) {
+            $table = (new $table)->getTable();
+        }
 
         return $this->prefix ? $wpdb->prefix.$table : $table;
     }
