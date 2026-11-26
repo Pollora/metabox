@@ -183,7 +183,7 @@ class Side
      * side: they are taken from the other side, where they are displayed.
      *
      * @param  self  $other  The other side of the relationship.
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function build(self $other): array
     {

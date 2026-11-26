@@ -325,7 +325,7 @@ class Block extends FieldGroup
      *
      * MB Blocks replaces its default attributes with the custom ones: keep them.
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function build(): array
     {

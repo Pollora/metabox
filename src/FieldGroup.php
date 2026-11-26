@@ -221,6 +221,7 @@ class FieldGroup implements Renderable
 
         if (! doing_filter('rwmb_meta_boxes')) {
             add_filter('rwmb_meta_boxes', function ($meta_boxes) {
+                $meta_boxes = is_array($meta_boxes) ? $meta_boxes : [];
                 $meta_boxes[] = $this->build();
 
                 return $meta_boxes;
@@ -621,7 +622,7 @@ class FieldGroup implements Renderable
     /**
      * Build the field group and return its settings.
      *
-     * @return array<string, mixed> The settings of the field group.
+     * @return array<mixed> The settings of the field group.
      */
     public function build(): array
     {

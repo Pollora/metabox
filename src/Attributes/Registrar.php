@@ -36,7 +36,7 @@ final class Registrar
     /**
      * The settings built for Meta Box, by class.
      *
-     * @var array<class-string, array<string, mixed>>
+     * @var array<class-string, array<mixed>>
      */
     private static array $built = [];
 
@@ -269,7 +269,7 @@ final class Registrar
      * Build the settings of a declared class.
      *
      * @param  class-string  $class
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     private static function build(string $class, FieldGroup|Block|SettingsPage $declaration): array
     {
@@ -406,9 +406,9 @@ final class Registrar
             ?? throw new LogicException("The block '{$class}' is rendered with the view '{$view}': this needs an integration rendering views, such as pollora/metabox-bridge.");
 
         // MB Blocks passes the arguments by name: keep these parameter names.
-        $block->renderCallback(function ($attributes, $is_preview = false, $post_id = null) use ($integration, $view): void {
+        $block->renderCallback(function (mixed $attributes, $is_preview = false, $post_id = null) use ($integration, $view): void {
             echo $integration->render($view, [
-                'attributes' => $attributes['data'] ?? [],
+                'attributes' => is_array($attributes) ? $attributes['data'] ?? [] : [],
                 'block' => $attributes,
                 'isPreview' => (bool) $is_preview,
                 'postId' => $post_id,

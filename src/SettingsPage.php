@@ -150,6 +150,7 @@ class SettingsPage implements Renderable
 
         if (! doing_filter('mb_settings_pages')) {
             add_filter('mb_settings_pages', function ($settings_pages) {
+                $settings_pages = is_array($settings_pages) ? $settings_pages : [];
                 $settings_pages[] = $this->build();
 
                 return $settings_pages;
@@ -363,7 +364,7 @@ class SettingsPage implements Renderable
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function build(): array
     {

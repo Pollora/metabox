@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox\Exception;
 
+use BackedEnum;
+
 /**
  * EnumException class provides a static method to generate an error message based on the allowed values of an enum class.
  */
@@ -20,8 +22,8 @@ final class Enum
     public static function generateErrorMessageFromEnumValues(string $enumClass): string
     {
         $values = array_map(
-            static fn ($e) => $e->value,
-            $enumClass::cases()
+            static fn (BackedEnum $case): int|string => $case->value,
+            is_subclass_of($enumClass, BackedEnum::class) ? $enumClass::cases() : []
         );
         $formattedValues = implode("', '", $values);
 

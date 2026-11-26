@@ -12,7 +12,7 @@ trait Attributes
     /**
      * Array of custom HTML5 attributes.
      *
-     * @var array<string, mixed>
+     * @var array<mixed>
      */
     protected array $attributes;
 
@@ -41,7 +41,7 @@ trait Attributes
     /**
      * Get all custom attributes.
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function getAttributes(): array
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pollora\Metabox\CustomTable;
 
 use InvalidArgumentException;
+use LogicException;
 
 /**
  * Name of a custom table (MB Custom Table), prefixed with the WordPress table prefix.
@@ -35,7 +36,13 @@ final class TableName
             $table = (new $table)->getTable();
         }
 
-        return $this->prefix ? $wpdb->prefix.$table : $table;
+        if (! is_string($table)) {
+            throw new LogicException("getTable() of '{$this->table}' must return a table name.");
+        }
+
+        $prefix = is_object($wpdb) && is_string($wpdb->prefix ?? null) ? $wpdb->prefix : '';
+
+        return $this->prefix ? $prefix.$table : $table;
     }
 
     private static function isModelClass(string $table): bool

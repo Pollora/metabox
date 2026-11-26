@@ -113,7 +113,7 @@ class Post extends Field
     /**
      * Build the field and return its settings.
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function build(): array
     {

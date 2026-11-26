@@ -42,11 +42,14 @@ class BlockTypeFilter
      */
     public static function filterBlockTypes($allowed_blocks, $context): mixed
     {
-        if (! isset($context->post) || self::$restrictions === []) {
+        $post = $context->post ?? null;
+        $postType = is_object($post) ? ($post->post_type ?? null) : null;
+
+        if (! is_string($postType) || self::$restrictions === []) {
             return $allowed_blocks;
         }
 
-        $removed = self::blocksRemovedFor($context->post->post_type);
+        $removed = self::blocksRemovedFor($postType);
 
         // Keep the value untouched when nothing is removed: expanding `true` to the server-side
         // registry would drop the blocks registered in JavaScript only.

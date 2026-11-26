@@ -83,7 +83,7 @@ class Column
     /**
      * The column settings for the meta box.
      *
-     * @return int|array<string, mixed>
+     * @return int|array<mixed>
      */
     public function build(): int|array
     {
