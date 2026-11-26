@@ -42,12 +42,13 @@ trait FieldTransformer
     protected function processTab(Tab $tab): void
     {
         $tabData = $tab->build();
-        $this->tabs[$tabData['id']] = $this->filterTabData($tabData);
+        $id = is_scalar($tabData['id']) ? (string) $tabData['id'] : '';
+        $this->tabs[$id] = $this->filterTabData($tabData);
 
         // A tab without fields has no 'fields' key: empty values are left out of what it builds.
-        foreach ($tabData['fields'] ?? [] as $subField) {
+        foreach ((array) ($tabData['fields'] ?? []) as $subField) {
             if ($subField instanceof Column) {
-                $this->addColumn($subField, $tabData['id']);
+                $this->addColumn($subField, $id);
             } elseif ($subField instanceof Renderable) {
                 $this->addField($subField);
             }

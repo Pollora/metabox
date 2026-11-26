@@ -254,7 +254,7 @@ class FieldGroup implements Renderable
     /**
      * Add fields to the field group.
      *
-     * @param  array<Field>  $fields  The fields to add.
+     * @param  array<mixed>  $fields  The fields, headings, tabs and columns to add.
      */
     public function fields(array $fields): static
     {
@@ -665,7 +665,8 @@ class FieldGroup implements Renderable
             return [];
         }
 
-        $tables = array_unique(array_map(function (string $name) {
+        $tables = array_unique(array_map(function (mixed $name): string {
+            $name = is_scalar($name) ? (string) $name : get_debug_type($name);
             $model = MetaboxModel::get($name)
                 ?? throw new LogicException("The model '{$name}' is not declared with MetaboxModel: call customTable() with its table.");
 

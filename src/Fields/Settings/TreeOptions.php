@@ -71,7 +71,7 @@ trait TreeOptions
             ], fn ($item) => $item !== null);
 
             if (is_array($option)) {
-                $options = $this->treeOptions($option['children'] ?? [], $value, $options);
+                $options = $this->treeOptions((array) ($option['children'] ?? []), $value, $options);
             }
         }
 

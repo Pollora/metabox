@@ -62,7 +62,7 @@ class BlockTypeFilter
             return $allowed_blocks;
         }
 
-        return array_values(array_filter($allowed_blocks, fn ($blockName) => ! isset($removed[$blockName])));
+        return array_values(array_filter($allowed_blocks, fn (mixed $blockName): bool => ! (is_string($blockName) && isset($removed[$blockName]))));
     }
 
     /**
@@ -93,8 +93,8 @@ class BlockTypeFilter
         $removed = [];
 
         foreach (self::$restrictions as $blockId => $restrictions) {
-            $notAllowed = isset($restrictions['allowed']) && ! in_array($postType, $restrictions['allowed'], true);
-            $excluded = isset($restrictions['excluded']) && in_array($postType, $restrictions['excluded'], true);
+            $notAllowed = isset($restrictions['allowed']) && ! in_array($postType, (array) $restrictions['allowed'], true);
+            $excluded = isset($restrictions['excluded']) && in_array($postType, (array) $restrictions['excluded'], true);
 
             if ($notAllowed || $excluded) {
                 $removed[self::blockName($blockId)] = true;

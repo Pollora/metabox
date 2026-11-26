@@ -47,9 +47,9 @@ final class RuleGroup
 
             // Meta Box applies the relation to each input value, and a list of values matches any of them.
             if ($key === 'input_value') {
-                $settings[$key] += $value;
+                $settings[$key] = (array) $settings[$key] + (array) $value;
             } elseif ($this->relation === 'OR' && is_array($value)) {
-                $settings[$key] = array_merge($settings[$key], $value);
+                $settings[$key] = array_merge((array) $settings[$key], $value);
             } else {
                 throw new LogicException("Meta Box cannot combine two '{$key}' rules with AND: use a single rule with all the values, which matches any of them.");
             }

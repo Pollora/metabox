@@ -29,7 +29,7 @@ trait JsOptions
         // The WordPress colour picker also takes a boolean here: only a list of colours is validated.
         if (is_array($js_options['palettes'] ?? null)) {
             foreach ($js_options['palettes'] as $color) {
-                ColorValidation::ensureIsColor($color);
+                ColorValidation::ensureIsColor(is_string($color) ? $color : get_debug_type($color));
             }
         }
 

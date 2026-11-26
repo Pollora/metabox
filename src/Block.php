@@ -337,7 +337,7 @@ class Block extends FieldGroup
                 'name' => ['type' => 'string', 'default' => $this->id],
                 'data' => ['type' => 'object', 'default' => $this->preview],
                 'anchor' => ['type' => 'string', 'default' => ''],
-            ] + $block['attributes'];
+            ] + (array) $block['attributes'];
         }
 
         return $block;
