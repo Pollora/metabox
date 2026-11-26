@@ -26,11 +26,15 @@ trait ConditionalLogic
 
     /**
      * The conditions that show the element.
+     *
+     * @var array<mixed>
      */
     protected array $visible;
 
     /**
      * The conditions that hide the element.
+     *
+     * @var array<mixed>
      */
     protected array $hidden;
 
@@ -91,7 +95,7 @@ trait ConditionalLogic
         }
 
         $condition = [$field instanceof Field ? $field->getId() : $field, strtolower($operator), $value];
-        $current = $this->{$setting} ?? [];
+        $current = (array) ($this->{$setting} ?? []);
 
         if ($current === []) {
             $this->{$setting} = $condition;
@@ -100,7 +104,7 @@ trait ConditionalLogic
         }
 
         [$conditions, $currentRelation] = match (true) {
-            isset($current['when']) => [$current['when'], 'or'],
+            isset($current['when']) => [(array) $current['when'], 'or'],
             is_array($current[0]) => [$current, 'and'],
             default => [[$current], null],
         };

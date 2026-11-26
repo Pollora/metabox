@@ -24,11 +24,15 @@ class Taxonomy extends Field
 
     /**
      * The taxonomies to select terms from.
+     *
+     * @var string|array<mixed>
      */
     protected string|array $taxonomy = 'category';
 
     /**
      * The arguments to pass to the WP_Term_Query function.
+     *
+     * @var array<mixed>
      */
     protected array $query_args;
 
@@ -50,7 +54,7 @@ class Taxonomy extends Field
     /**
      * Set the taxonomies to select terms from.
      *
-     * @param  string|array  $taxonomies  A taxonomy slug or a list of taxonomy slugs.
+     * @param  string|array<mixed>  $taxonomies  A taxonomy slug or a list of taxonomy slugs.
      */
     public function taxonomies(string|array $taxonomies): static
     {
@@ -62,7 +66,7 @@ class Taxonomy extends Field
     /**
      * Set the arguments to pass to the WP_Query function.
      *
-     * @param  array  $queryArgs  The arguments to pass to the WP_Query function.
+     * @param  array<mixed>  $queryArgs  The arguments to pass to the WP_Query function.
      */
     public function queryArgs(array $queryArgs): static
     {

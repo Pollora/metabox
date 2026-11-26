@@ -19,6 +19,8 @@ class BlockEditor extends Field
 
     /**
      * The block types allowed in the editor. Empty to allow all blocks.
+     *
+     * @var array<mixed>
      */
     protected array $allowed_blocks;
 
@@ -35,7 +37,7 @@ class BlockEditor extends Field
     /**
      * Set the block types allowed in the editor.
      *
-     * @param  array  $allowedBlocks  Block names, e.g. ['core/heading', 'core/image'].
+     * @param  array<mixed>  $allowedBlocks  Block names, e.g. ['core/heading', 'core/image'].
      */
     public function allowedBlocks(array $allowedBlocks): static
     {

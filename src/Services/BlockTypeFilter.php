@@ -11,6 +11,8 @@ class BlockTypeFilter
 {
     /**
      * Stored restrictions for blocks
+     *
+     * @var array<string, array<mixed>>
      */
     protected static array $restrictions = [];
 
@@ -23,7 +25,7 @@ class BlockTypeFilter
      * Register a block's post type restrictions
      *
      * @param  string  $blockId  The block identifier
-     * @param  array  $restrictions  The restrictions configuration
+     * @param  array<mixed>  $restrictions  The restrictions configuration
      */
     public static function registerRestrictions(string $blockId, array $restrictions): void
     {
@@ -40,11 +42,14 @@ class BlockTypeFilter
      */
     public static function filterBlockTypes($allowed_blocks, $context): mixed
     {
-        if (! isset($context->post) || self::$restrictions === []) {
+        $post = $context->post ?? null;
+        $postType = is_object($post) ? ($post->post_type ?? null) : null;
+
+        if (! is_string($postType) || self::$restrictions === []) {
             return $allowed_blocks;
         }
 
-        $removed = self::blocksRemovedFor($context->post->post_type);
+        $removed = self::blocksRemovedFor($postType);
 
         // Keep the value untouched when nothing is removed: expanding `true` to the server-side
         // registry would drop the blocks registered in JavaScript only.
@@ -60,7 +65,7 @@ class BlockTypeFilter
             return $allowed_blocks;
         }
 
-        return array_values(array_filter($allowed_blocks, fn ($blockName) => ! isset($removed[$blockName])));
+        return array_values(array_filter($allowed_blocks, fn (mixed $blockName): bool => ! (is_string($blockName) && isset($removed[$blockName]))));
     }
 
     /**
@@ -73,6 +78,8 @@ class BlockTypeFilter
 
     /**
      * Get the registered restrictions, keyed by block ID.
+     *
+     * @return array<string, array<mixed>>
      */
     public static function getRestrictions(): array
     {
@@ -89,8 +96,8 @@ class BlockTypeFilter
         $removed = [];
 
         foreach (self::$restrictions as $blockId => $restrictions) {
-            $notAllowed = isset($restrictions['allowed']) && ! in_array($postType, $restrictions['allowed'], true);
-            $excluded = isset($restrictions['excluded']) && in_array($postType, $restrictions['excluded'], true);
+            $notAllowed = isset($restrictions['allowed']) && ! in_array($postType, (array) $restrictions['allowed'], true);
+            $excluded = isset($restrictions['excluded']) && in_array($postType, (array) $restrictions['excluded'], true);
 
             if ($notAllowed || $excluded) {
                 $removed[self::blockName($blockId)] = true;

@@ -34,6 +34,8 @@ abstract class Input extends Field
 
     /**
      * The datalist options for the input field.
+     *
+     * @var array<mixed>
      */
     protected array $datalist;
 
@@ -85,7 +87,7 @@ abstract class Input extends Field
      * Set the datalist options for the input field.
      *
      * @param  string  $id  The ID of the datalist.
-     * @param  array  $options  The options for the datalist.
+     * @param  array<mixed>  $options  The options for the datalist.
      * @return static Returns the instance of the Text class for method chaining.
      */
     public function datalist(string $id, array $options): static

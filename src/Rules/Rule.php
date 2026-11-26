@@ -194,7 +194,7 @@ final class Rule
     /**
      * Match when the callback returns true. It receives the meta box settings.
      *
-     * @param  callable(array): bool  $callback
+     * @param  callable(array<mixed>): bool  $callback
      */
     public static function custom(callable $callback): self
     {

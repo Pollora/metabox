@@ -25,11 +25,15 @@ class Post extends Field
 
     /**
      * The type of post to select.
+     *
+     * @var string|array<mixed>
      */
     protected string|array $post_type;
 
     /**
      * The arguments to pass to the WP_Query function.
+     *
+     * @var array<mixed>
      */
     protected array $query_args;
 
@@ -51,7 +55,7 @@ class Post extends Field
     /**
      * Set the type of post to select.
      *
-     * @param  string|array  $postType  The type of post to select.
+     * @param  string|array<mixed>  $postType  The type of post to select.
      */
     public function postType(string|array $postType): static
     {
@@ -63,7 +67,7 @@ class Post extends Field
     /**
      * Set the arguments to pass to the WP_Query function.
      *
-     * @param  array  $queryArgs  The arguments to pass to the WP_Query function.
+     * @param  array<mixed>  $queryArgs  The arguments to pass to the WP_Query function.
      */
     public function queryArgs(array $queryArgs): static
     {
@@ -108,6 +112,8 @@ class Post extends Field
 
     /**
      * Build the field and return its settings.
+     *
+     * @return array<mixed>
      */
     public function build(): array
     {

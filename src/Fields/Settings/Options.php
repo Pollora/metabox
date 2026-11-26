@@ -11,13 +11,15 @@ trait Options
 {
     /**
      * Array of 'value' => 'Label' for the inputs or a URL for AJAX.
+     *
+     * @var array<mixed>|string
      */
     protected array|string $options;
 
     /**
      * Set the options for the inputs.
      *
-     * @param  array|string  $options  Array of 'value' => 'Label' or URL for AJAX.
+     * @param  array<mixed>|string  $options  Array of 'value' => 'Label' or URL for AJAX.
      * @return static Returns the instance of the class for method chaining.
      */
     public function options(array|string $options): static

@@ -23,6 +23,8 @@ final class StringValidation
      * @param  string  $enumClass  The fully-qualified class name of the enum class.
      *
      * @throws InvalidArgumentException If the value is not a string.
+     *
+     * @phpstan-assert string $value
      */
     public static function ensureIsString(mixed $value, string $enumClass): void
     {

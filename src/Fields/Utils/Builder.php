@@ -14,7 +14,7 @@ trait Builder
     /**
      * Builds the field and returns its properties as an associative array.
      *
-     * @return array The properties of the field.
+     * @return array<mixed> The properties of the field.
      */
     public function build(): array
     {
@@ -25,7 +25,7 @@ trait Builder
 
         // Merge custom settings if they exist
         if (method_exists($this, 'getSettings') && ! empty($settings = $this->getSettings())) {
-            $fieldData = array_merge($fieldData, $settings);
+            $fieldData = array_merge($fieldData, (array) $settings);
         }
 
         return $fieldData;

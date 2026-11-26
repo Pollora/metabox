@@ -14,6 +14,8 @@ trait InputTooltip
 {
     /**
      * The input tooltip content, or its full settings.
+     *
+     * @var string|array<mixed>
      */
     protected string|array $tooltip_input;
 

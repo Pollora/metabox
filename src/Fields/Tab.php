@@ -19,6 +19,8 @@ class Tab extends Field
 
     /**
      * Container for all fields including nested groups.
+     *
+     * @var array<mixed>
      */
     protected array $fields = [];
 
@@ -43,7 +45,7 @@ class Tab extends Field
     /**
      * Adds fields to the group, which can include nested groups.
      *
-     * @param  array  $fields  An array of Field instances to add to the group.
+     * @param  array<mixed>  $fields  An array of Field instances to add to the group.
      * @return self The instance of the Group class for method chaining.
      *
      * @throws InvalidArgumentException If any of the fields is not an instance of Field.

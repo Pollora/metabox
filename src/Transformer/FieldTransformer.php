@@ -16,7 +16,7 @@ trait FieldTransformer
     /**
      * Adds fields to the transformer.
      *
-     * @param  array  $fields  An array of fields to add.
+     * @param  array<mixed>  $fields  An array of fields to add.
      * @return static The transformed instance.
      */
     public function buildFieldset(array $fields): static
@@ -42,12 +42,13 @@ trait FieldTransformer
     protected function processTab(Tab $tab): void
     {
         $tabData = $tab->build();
-        $this->tabs[$tabData['id']] = $this->filterTabData($tabData);
+        $id = is_scalar($tabData['id']) ? (string) $tabData['id'] : '';
+        $this->tabs[$id] = $this->filterTabData($tabData);
 
         // A tab without fields has no 'fields' key: empty values are left out of what it builds.
-        foreach ($tabData['fields'] ?? [] as $subField) {
+        foreach ((array) ($tabData['fields'] ?? []) as $subField) {
             if ($subField instanceof Column) {
-                $this->addColumn($subField, $tabData['id']);
+                $this->addColumn($subField, $id);
             } elseif ($subField instanceof Renderable) {
                 $this->addField($subField);
             }
@@ -82,8 +83,8 @@ trait FieldTransformer
     /**
      * Filter and format tab data.
      *
-     * @param  array  $tabData  Data from the Tab object.
-     * @return array Filtered and formatted tab data.
+     * @param  array<mixed>  $tabData  Data from the Tab object.
+     * @return array<mixed> Filtered and formatted tab data.
      */
     protected function filterTabData(array $tabData): array
     {

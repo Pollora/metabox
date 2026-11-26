@@ -108,6 +108,8 @@ abstract class Field implements Renderable
 
     /**
      * The settings for the field.
+     *
+     * @var array<string, mixed>
      */
     protected array $settings = [];
 
@@ -174,7 +176,7 @@ abstract class Field implements Renderable
     /**
      * Get the custom settings for the field.
      *
-     * @return array The custom settings.
+     * @return array<string, mixed> The custom settings.
      */
     public function getSettings(): array
     {

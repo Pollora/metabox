@@ -97,6 +97,8 @@ class Relationship
 
     /**
      * Build the relationship and return its MB Relationships settings.
+     *
+     * @return array<string, mixed>
      */
     public function build(): array
     {
@@ -122,8 +124,8 @@ class Relationship
     /**
      * A reciprocal relationship connects objects of the same type, and only displays the from side.
      *
-     * @param  array  $from  The settings of the from side.
-     * @param  array  $to  The settings of the to side, which hold the field of the from side.
+     * @param  array<mixed>  $from  The settings of the from side.
+     * @param  array<mixed>  $to  The settings of the to side, which hold the field of the from side.
      */
     protected function ensureReciprocal(array $from, array $to): void
     {

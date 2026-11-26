@@ -27,6 +27,7 @@ class MetaboxModel
 
     protected ?TableName $table = null;
 
+    /** @var array<mixed> */
     protected array $labels = [];
 
     protected bool $show_in_menu = true;
@@ -213,6 +214,8 @@ class MetaboxModel
 
     /**
      * Build the model and return its MB Custom Table settings.
+     *
+     * @return array<string, mixed>
      */
     public function build(): array
     {

@@ -19,6 +19,7 @@ class User extends Field
 
     protected string $type = 'user';
 
+    /** @var array<mixed> */
     protected array $query_args;
 
     protected string $field_type = 'select';
@@ -33,6 +34,9 @@ class User extends Field
      */
     protected bool $add_new;
 
+    /**
+     * @param  array<mixed>  $queryArgs
+     */
     public function queryArgs(array $queryArgs): static
     {
         $this->query_args = $queryArgs;

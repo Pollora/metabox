@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pollora\Metabox\Transformer;
 
+use BackedEnum;
 use InvalidArgumentException;
 use Pollora\Metabox\Exception\Enum;
 
@@ -21,6 +22,10 @@ final class EnumTransformer
      */
     public static function convertStringToEnumValue(string $value, string $enumClass, string|bool|null $errorMessage = null): string
     {
+        if (! is_subclass_of($enumClass, BackedEnum::class)) {
+            throw new InvalidArgumentException("Invalid enum class: {$enumClass}");
+        }
+
         $enumValue = $enumClass::tryFrom($value);
         if ($enumValue === null) {
             if (! is_string($errorMessage) || ! $errorMessage) {
@@ -29,6 +34,6 @@ final class EnumTransformer
             throw new InvalidArgumentException($errorMessage);
         }
 
-        return $enumValue->value;
+        return (string) $enumValue->value;
     }
 }

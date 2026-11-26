@@ -29,16 +29,22 @@ class Side
 
     /**
      * The settings of the meta box displayed on the edit screen of the objects.
+     *
+     * @var array<mixed>
      */
     protected array $metaBox = [];
 
     /**
      * The settings of the field selecting the connected objects, in the meta box.
+     *
+     * @var array<mixed>
      */
     protected array $field = [];
 
     /**
      * The admin column listing the connected objects, or true for a default column.
+     *
+     * @var bool|array<mixed>
      */
     protected bool|array $adminColumn = false;
 
@@ -118,7 +124,7 @@ class Side
      *
      * @param  string|null  $label  Defaults to the plural name of the connected post type or taxonomy, or "Users".
      * @param  int|null  $max  The maximum number of connected objects.
-     * @param  array  $queryArgs  Arguments of the query listing the connected objects, passed to WP_Query, get_terms() or get_users().
+     * @param  array<mixed>  $queryArgs  Arguments of the query listing the connected objects, passed to WP_Query, get_terms() or get_users().
      */
     public function field(?string $label = null, ?string $placeholder = null, ?int $max = null, array $queryArgs = []): static
     {
@@ -177,6 +183,7 @@ class Side
      * side: they are taken from the other side, where they are displayed.
      *
      * @param  self  $other  The other side of the relationship.
+     * @return array<mixed>
      */
     public function build(self $other): array
     {

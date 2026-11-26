@@ -230,7 +230,7 @@ trait TimepickerOptions
     /**
      * Set the AM names for the jQuery UI Timepicker.
      *
-     * @param  array  $names  The AM names.
+     * @param  array<mixed>  $names  The AM names.
      */
     public function amNames(array $names): static
     {
@@ -242,7 +242,7 @@ trait TimepickerOptions
     /**
      * Set the PM names for the jQuery UI Timepicker.
      *
-     * @param  array  $names  The PM names.
+     * @param  array<mixed>  $names  The PM names.
      */
     public function pmNames(array $names): static
     {
@@ -710,7 +710,7 @@ trait TimepickerOptions
     /**
      * Set the arguments for the slider access.
      *
-     * @param  array  $args  The arguments for the slider access.
+     * @param  array<mixed>  $args  The arguments for the slider access.
      */
     public function sliderAccessArgs(array $args): static
     {
