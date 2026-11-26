@@ -44,7 +44,8 @@ trait FieldTransformer
         $tabData = $tab->build();
         $this->tabs[$tabData['id']] = $this->filterTabData($tabData);
 
-        foreach ($tabData['fields'] as $subField) {
+        // A tab without fields has no 'fields' key: empty values are left out of what it builds.
+        foreach ($tabData['fields'] ?? [] as $subField) {
             if ($subField instanceof Column) {
                 $this->addColumn($subField, $tabData['id']);
             } elseif ($subField instanceof Renderable) {

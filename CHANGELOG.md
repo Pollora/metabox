@@ -10,6 +10,8 @@
 
 - `cloneable(null)`, which the signature accepts, no longer throws a `TypeError`: the field is not cloneable.
 - `OptionValidation::check()` and `EnumTransformer::convertStringToEnumValue()` given `true` as error message report the allowed values instead of throwing a `TypeError`.
+- `jsOptions(['palettes' => false])` (or `true`), as the WordPress colour picker takes it, no longer raises a PHP warning.
+- A tab without any field no longer raises PHP warnings.
 
 ## 3.1.0 - 2026-10-16
 

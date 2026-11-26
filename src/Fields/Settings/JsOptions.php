@@ -24,8 +24,8 @@ trait JsOptions
      */
     public function jsOptions(array $js_options): static
     {
-
-        if (isset($js_options['palettes'])) {
+        // The WordPress colour picker also takes a boolean here: only a list of colours is validated.
+        if (is_array($js_options['palettes'] ?? null)) {
             foreach ($js_options['palettes'] as $color) {
                 ColorValidation::ensureIsColor($color);
             }
