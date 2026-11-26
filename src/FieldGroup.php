@@ -220,7 +220,7 @@ class FieldGroup implements Renderable
         }
 
         if (! doing_filter('rwmb_meta_boxes')) {
-            add_filter('rwmb_meta_boxes', function ($meta_boxes) {
+            add_filter('rwmb_meta_boxes', function (mixed $meta_boxes): array {
                 $meta_boxes = is_array($meta_boxes) ? $meta_boxes : [];
                 $meta_boxes[] = $this->build();
 

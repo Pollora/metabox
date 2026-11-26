@@ -149,7 +149,7 @@ class SettingsPage implements Renderable
         $this->menu_title = $page_title;
 
         if (! doing_filter('mb_settings_pages')) {
-            add_filter('mb_settings_pages', function ($settings_pages) {
+            add_filter('mb_settings_pages', function (mixed $settings_pages): array {
                 $settings_pages = is_array($settings_pages) ? $settings_pages : [];
                 $settings_pages[] = $this->build();
 
