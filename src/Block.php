@@ -41,6 +41,8 @@ class Block extends FieldGroup
 
     /**
      * The icon of the block.
+     *
+     * @var string|array<mixed>
      */
     protected string|array $icon = 'awards';
 
@@ -51,6 +53,8 @@ class Block extends FieldGroup
 
     /**
      * The keywords for the block.
+     *
+     * @var array<mixed>
      */
     protected array $keywords = [];
 
@@ -71,11 +75,15 @@ class Block extends FieldGroup
 
     /**
      * The custom attributes of the block type.
+     *
+     * @var array<mixed>
      */
     protected array $attributes;
 
     /**
      * The supports options for the block.
+     *
+     * @var array<mixed>
      */
     protected array $supports;
 
@@ -86,26 +94,36 @@ class Block extends FieldGroup
 
     /**
      * The render callback for the block.
+     *
+     * @var callable
      */
     protected $render_callback;
 
     /**
      * The enqueue assets callback for the block.
+     *
+     * @var callable
      */
     protected $enqueue_assets;
 
     /**
      * The preview data for the block.
+     *
+     * @var array<mixed>
      */
     protected array $preview = [];
 
     /**
      * The post types for the block.
+     *
+     * @var array<mixed>
      */
     protected array $post_types;
 
     /**
      * The excluded post types for the block.
+     *
+     * @var array<mixed>
      */
     protected array $excluded_post_types;
 
@@ -124,7 +142,7 @@ class Block extends FieldGroup
     /**
      * Set the icon of the block.
      *
-     * @param  string|array  $icon  The icon of the block.
+     * @param  string|array<mixed>  $icon  The icon of the block.
      */
     public function icon(string|array $icon): static
     {
@@ -148,7 +166,7 @@ class Block extends FieldGroup
     /**
      * Set the keywords for the block.
      *
-     * @param  array  $keywords  The keywords for the block.
+     * @param  array<mixed>  $keywords  The keywords for the block.
      */
     public function keywords(array $keywords): static
     {
@@ -196,7 +214,7 @@ class Block extends FieldGroup
     /**
      * Set the supports options for the block.
      *
-     * @param  array  $supports  The supports options for the block.
+     * @param  array<mixed>  $supports  The supports options for the block.
      */
     public function supports(array $supports): static
     {
@@ -242,7 +260,7 @@ class Block extends FieldGroup
     /**
      * Set the preview data for the block.
      *
-     * @param  array  $preview  The preview data.
+     * @param  array<mixed>  $preview  The preview data.
      */
     public function preview(array $preview): static
     {
@@ -254,7 +272,7 @@ class Block extends FieldGroup
     /**
      * Restrict block to specific post types
      *
-     * @param  array  $postTypes  The allowed post types
+     * @param  array<mixed>  $postTypes  The allowed post types
      */
     public function restrictToPostTypes(array $postTypes): static
     {
@@ -267,7 +285,7 @@ class Block extends FieldGroup
     /**
      * Exclude block from specific post types
      *
-     * @param  array  $postTypes  The excluded post types
+     * @param  array<mixed>  $postTypes  The excluded post types
      */
     public function excludePostTypes(array $postTypes): static
     {
@@ -281,7 +299,7 @@ class Block extends FieldGroup
      * Add attributes to the block type, e.g. ['theme' => ['type' => 'string', 'default' => 'light']].
      * They are available in the render template or callback with the field values.
      *
-     * @param  array  $attributes  Attribute definitions keyed by name, each with a 'type' and an optional 'default'.
+     * @param  array<mixed>  $attributes  Attribute definitions keyed by name, each with a 'type' and an optional 'default'.
      */
     public function attributes(array $attributes): static
     {
@@ -306,6 +324,8 @@ class Block extends FieldGroup
      * Build the block and return its settings.
      *
      * MB Blocks replaces its default attributes with the custom ones: keep them.
+     *
+     * @return array<string, mixed>
      */
     public function build(): array
     {

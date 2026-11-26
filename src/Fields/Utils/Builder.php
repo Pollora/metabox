@@ -14,7 +14,7 @@ trait Builder
     /**
      * Builds the field and returns its properties as an associative array.
      *
-     * @return array The properties of the field.
+     * @return array<string, mixed> The properties of the field.
      */
     public function build(): array
     {

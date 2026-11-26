@@ -11,13 +11,15 @@ trait Attributes
 {
     /**
      * Array of custom HTML5 attributes.
+     *
+     * @var array<string, mixed>
      */
     protected array $attributes;
 
     /**
      * Set custom HTML attributes for the field, e.g. maxlength, pattern or data-* attributes.
      *
-     * @param  array  $attributes  Attributes in 'key' => 'value' format.
+     * @param  array<mixed>  $attributes  Attributes in 'key' => 'value' format.
      */
     public function attributes(array $attributes): static
     {
@@ -38,6 +40,8 @@ trait Attributes
 
     /**
      * Get all custom attributes.
+     *
+     * @return array<string, mixed>
      */
     public function getAttributes(): array
     {

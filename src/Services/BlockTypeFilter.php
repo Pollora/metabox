@@ -11,6 +11,8 @@ class BlockTypeFilter
 {
     /**
      * Stored restrictions for blocks
+     *
+     * @var array<string, array<mixed>>
      */
     protected static array $restrictions = [];
 
@@ -23,7 +25,7 @@ class BlockTypeFilter
      * Register a block's post type restrictions
      *
      * @param  string  $blockId  The block identifier
-     * @param  array  $restrictions  The restrictions configuration
+     * @param  array<mixed>  $restrictions  The restrictions configuration
      */
     public static function registerRestrictions(string $blockId, array $restrictions): void
     {
@@ -73,6 +75,8 @@ class BlockTypeFilter
 
     /**
      * Get the registered restrictions, keyed by block ID.
+     *
+     * @return array<string, array<mixed>>
      */
     public static function getRestrictions(): array
     {

@@ -29,6 +29,7 @@ final class RuleGroup
      * Build the settings Meta Box expects for a FieldGroup method.
      *
      * @param  string  $method  'include', 'exclude', 'show' or 'hide'.
+     * @return array<mixed>
      */
     public function toArray(string $method): array
     {

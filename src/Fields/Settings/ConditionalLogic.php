@@ -26,11 +26,15 @@ trait ConditionalLogic
 
     /**
      * The conditions that show the element.
+     *
+     * @var array<mixed>
      */
     protected array $visible;
 
     /**
      * The conditions that hide the element.
+     *
+     * @var array<mixed>
      */
     protected array $hidden;
 

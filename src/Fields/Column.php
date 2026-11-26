@@ -57,7 +57,7 @@ class Column
     /**
      * Add fields to the column, displayed one below the other.
      *
-     * @param  array  $fields  Fields, headings and dividers.
+     * @param  array<mixed>  $fields  Fields, headings and dividers.
      */
     public function fields(array $fields): static
     {
@@ -82,6 +82,8 @@ class Column
 
     /**
      * The column settings for the meta box.
+     *
+     * @return int|array<string, mixed>
      */
     public function build(): int|array
     {

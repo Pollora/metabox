@@ -12,7 +12,7 @@ interface Renderable
     /**
      * Build the instance and return its data as an array.
      *
-     * @return array The data of the instance as an array.
+     * @return array<string, mixed> The data of the instance as an array.
      */
     public function build(): array;
 }

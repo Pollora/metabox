@@ -16,7 +16,7 @@ trait FieldTransformer
     /**
      * Adds fields to the transformer.
      *
-     * @param  array  $fields  An array of fields to add.
+     * @param  array<mixed>  $fields  An array of fields to add.
      * @return static The transformed instance.
      */
     public function buildFieldset(array $fields): static
@@ -82,8 +82,8 @@ trait FieldTransformer
     /**
      * Filter and format tab data.
      *
-     * @param  array  $tabData  Data from the Tab object.
-     * @return array Filtered and formatted tab data.
+     * @param  array<mixed>  $tabData  Data from the Tab object.
+     * @return array<mixed> Filtered and formatted tab data.
      */
     protected function filterTabData(array $tabData): array
     {

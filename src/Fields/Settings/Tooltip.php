@@ -14,6 +14,8 @@ trait Tooltip
 {
     /**
      * The tooltip content, or its full settings.
+     *
+     * @var string|array<mixed>
      */
     protected string|array $tooltip;
 
@@ -34,6 +36,8 @@ trait Tooltip
 
     /**
      * The tooltip settings: the content alone when no other setting is given.
+     *
+     * @return string|array<mixed>
      */
     protected function tooltipSettings(string $content, ?string $icon, string|TooltipPosition|null $position, bool $allowHtml): string|array
     {

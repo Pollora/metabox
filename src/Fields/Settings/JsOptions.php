@@ -13,13 +13,15 @@ trait JsOptions
 {
     /**
      * JavaScript options for the field.
+     *
+     * @var array<mixed>
      */
     protected array $js_options;
 
     /**
      * Set JavaScript options for the field, merged with the options set before.
      *
-     * @param  array  $js_options  JavaScript options.
+     * @param  array<mixed>  $js_options  JavaScript options.
      * @return static Returns the instance of the field class for method chaining.
      */
     public function jsOptions(array $js_options): static

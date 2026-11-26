@@ -146,7 +146,7 @@ trait EditorParams
     /**
      * Set the configuration for the tinymce editor.
      *
-     * @param  array  $settings  The configuration for the tinymce editor.
+     * @param  array<mixed>  $settings  The configuration for the tinymce editor.
      */
     public function tinymce(array $settings): static
     {
@@ -158,7 +158,7 @@ trait EditorParams
     /**
      * Set the configuration for the quicktags editor.
      *
-     * @param  array  $settings  The configuration for the quicktags editor.
+     * @param  array<mixed>  $settings  The configuration for the quicktags editor.
      */
     public function quicktags(array $settings): static
     {

@@ -15,6 +15,8 @@ trait AdminColumn
 {
     /**
      * The admin column settings, or true for a default column.
+     *
+     * @var bool|array<mixed>
      */
     protected bool|array $admin_columns;
 

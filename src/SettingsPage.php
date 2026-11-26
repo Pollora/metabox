@@ -80,6 +80,8 @@ class SettingsPage implements Renderable
 
     /**
      * Tabs configuration
+     *
+     * @var array<mixed>
      */
     protected array $tabs = [];
 
@@ -100,6 +102,8 @@ class SettingsPage implements Renderable
 
     /**
      * Help tabs content
+     *
+     * @var array<mixed>
      */
     protected array $help_tabs = [];
 
@@ -125,6 +129,8 @@ class SettingsPage implements Renderable
 
     /**
      * The custom settings for the settings page.
+     *
+     * @var array<string, mixed>
      */
     protected array $settings = [];
 
@@ -246,6 +252,9 @@ class SettingsPage implements Renderable
         return $this;
     }
 
+    /**
+     * @param  array<mixed>  $tabs
+     */
     public function tabs(array $tabs): static
     {
         $this->tabs = $tabs;
@@ -292,6 +301,9 @@ class SettingsPage implements Renderable
         return $this;
     }
 
+    /**
+     * @param  array<mixed>  $tabs
+     */
     public function helpTabs(array $tabs): static
     {
         $this->help_tabs = $tabs;
@@ -343,13 +355,16 @@ class SettingsPage implements Renderable
     /**
      * Get the custom settings for the settings page.
      *
-     * @return array The custom settings.
+     * @return array<string, mixed> The custom settings.
      */
     public function getSettings(): array
     {
         return $this->settings;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function build(): array
     {
         $pageData = EmptyValueFilter::filter(get_object_vars($this));

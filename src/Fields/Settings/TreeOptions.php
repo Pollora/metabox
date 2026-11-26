@@ -13,6 +13,8 @@ trait TreeOptions
 {
     /**
      * The options, each with a value, a label and the value of its parent.
+     *
+     * @var array<mixed>|string
      */
     protected array|string $options;
 
@@ -27,6 +29,8 @@ trait TreeOptions
      *
      * Each option is a 'value' => 'Label' pair, or 'value' => ['label' => 'Label',
      * 'children' => [...]] for an option with children.
+     *
+     * @param  array<mixed>  $tree
      */
     public function tree(array $tree): static
     {
@@ -39,6 +43,8 @@ trait TreeOptions
 
     /**
      * Add the options of a tree level, in the Meta Box format.
+     *
+     * @param  array<mixed>  $tree
      */
     private function addTreeOptions(array $tree, ?string $parent): void
     {

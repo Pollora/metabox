@@ -39,11 +39,15 @@ class FieldGroup implements Renderable
 
     /**
      * The fields within the field group.
+     *
+     * @var array<mixed>
      */
     protected array $fields = [];
 
     /**
      * The tabs within the field group.
+     *
+     * @var array<mixed>
      */
     protected array $tabs = [];
 
@@ -119,6 +123,8 @@ class FieldGroup implements Renderable
 
     /**
      * The validation rules and messages, keyed by input name.
+     *
+     * @var array<mixed>
      */
     protected array $validation;
 
@@ -144,31 +150,43 @@ class FieldGroup implements Renderable
 
     /**
      * The rules registering the field group (MB Include Exclude).
+     *
+     * @var array<mixed>
      */
     protected array $include;
 
     /**
      * The rules not registering the field group (MB Include Exclude).
+     *
+     * @var array<mixed>
      */
     protected array $exclude;
 
     /**
      * The rules displaying the field group (MB Show Hide).
+     *
+     * @var array<mixed>
      */
     protected array $show;
 
     /**
      * The rules hiding the field group (MB Show Hide).
+     *
+     * @var array<mixed>
      */
     protected array $hide;
 
     /**
      * The columns holding several fields (Meta Box Columns).
+     *
+     * @var array<mixed>
      */
     protected array $columns = [];
 
     /**
      * The geolocation settings (MB Geolocation).
+     *
+     * @var bool|array<string, mixed>
      */
     protected bool|array $geo;
 
@@ -184,6 +202,8 @@ class FieldGroup implements Renderable
 
     /**
      * The custom settings for the field group.
+     *
+     * @var array<string, mixed>
      */
     protected array $settings = [];
 
@@ -246,7 +266,7 @@ class FieldGroup implements Renderable
     /**
      * Set the tabs of the field group.
      *
-     * @param  array  $tabs  The tabs of the field group.
+     * @param  array<mixed>  $tabs  The tabs of the field group.
      */
     public function tabs(array $tabs): static
     {
@@ -422,8 +442,8 @@ class FieldGroup implements Renderable
      * Rules and messages are keyed by input name: usually the field ID, but e.g.
      * 'my_taxonomy[]' for a checkbox list or '_file_my_files[]' for file fields.
      *
-     * @param  array  $rules  e.g. ['email' => ['required' => true, 'minlength' => 7]]
-     * @param  array  $messages  e.g. ['email' => ['required' => 'Email is required']]
+     * @param  array<mixed>  $rules  e.g. ['email' => ['required' => true, 'minlength' => 7]]
+     * @param  array<mixed>  $messages  e.g. ['email' => ['required' => 'Email is required']]
      */
     public function validation(array $rules, array $messages = []): static
     {
@@ -526,7 +546,7 @@ class FieldGroup implements Renderable
      * the fields named after an address component, e.g. 'locality', are filled.
      *
      * @param  string|null  $apiKey  The Google Maps API key, unless a Google Maps field sets it. Without a key, OpenStreetMap is used.
-     * @param  array  $types  The Google place types suggested, e.g. ['establishment'] or ['(cities)'].
+     * @param  array<mixed>  $types  The Google place types suggested, e.g. ['establishment'] or ['(cities)'].
      * @param  string|array<string>  $countries  The ISO 3166-1 alpha-2 codes of the countries the suggestions are restricted to, at most 5 (Google Maps).
      */
     public function geolocation(?string $apiKey = null, array $types = [], string|array $countries = []): static
@@ -591,7 +611,7 @@ class FieldGroup implements Renderable
     /**
      * Get the custom settings for the field group.
      *
-     * @return array The custom settings.
+     * @return array<string, mixed> The custom settings.
      */
     public function getSettings(): array
     {
@@ -601,7 +621,7 @@ class FieldGroup implements Renderable
     /**
      * Build the field group and return its settings.
      *
-     * @return array The settings of the field group.
+     * @return array<string, mixed> The settings of the field group.
      */
     public function build(): array
     {
@@ -630,6 +650,8 @@ class FieldGroup implements Renderable
     /**
      * The custom table settings: the table set with customTable(), or the table of the models
      * the field group is displayed on.
+     *
+     * @return array<string, mixed>
      */
     protected function customTableSettings(): array
     {
@@ -659,6 +681,8 @@ class FieldGroup implements Renderable
 
     /**
      * Convert a rule or a group of rules to the Meta Box settings.
+     *
+     * @return array<mixed>
      */
     protected function buildRules(Rule|RuleGroup $rule, string $method): array
     {
