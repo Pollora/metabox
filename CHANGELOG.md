@@ -1,10 +1,24 @@
 # Changelog
 
-## [Unreleased]
+## 3.2.0 - 2026-11-27
+
+**This minor version raises the PHP requirement from 8.2 to 8.3.** Composer does not install it on PHP 8.2: such a project stays on 3.1.
+
+### Added
+
+- `Exception\WordPressNotLoadedException`, thrown instead of a bare `Exception` when a `FieldGroup`, `Block`, `SettingsPage`, `MetaboxModel` or `Relationship` is created before WordPress is loaded. It extends `Exception` and keeps the message, so existing `catch` blocks still work.
 
 ### Changed
 
 - Requires PHP 8.3 or later (PHP 8.2 is no longer supported).
+- Invalid input that failed with a `TypeError` or an `Error` now throws an exception saying what is wrong. Code catching the former classes for these cases must catch the new ones:
+  - `LogicException` when the `fields()` method of a class declared with attributes does not return an array;
+  - `LogicException` when an editor setting of `Wysiwyg`, such as `teeny()` or `wpautop()`, follows `options()` given as a string;
+  - `InvalidArgumentException` when `EnumTransformer::convertStringToEnumValue()` is given a class that is not a backed enum;
+  - `InvalidArgumentException` when `OptionValidation::check()` is given a case of an enum that is not backed by strings;
+  - `InvalidArgumentException` when a colour of `jsOptions(['palettes' => [...]])` is not a string.
+- The `getTable()` method of a class given to `customTable()` or `MetaboxModel::table()` must return a string, and a `LogicException` is thrown otherwise. With the table prefix, 3.1 concatenated any other value: `null` gave the prefix alone as table name, and a `Stringable` object or a number was converted to text.
+- The archive Composer downloads no longer contains the tests and the development files.
 
 ### Fixed
 
@@ -12,6 +26,12 @@
 - `OptionValidation::check()` and `EnumTransformer::convertStringToEnumValue()` given `true` as error message report the allowed values instead of throwing a `TypeError`.
 - `jsOptions(['palettes' => false])` (or `true`), as the WordPress colour picker takes it, no longer raises a PHP warning.
 - A tab without any field no longer raises PHP warnings.
+- A value that is not an array, passed by another filter to `rwmb_meta_boxes` or `mb_settings_pages`, is replaced by an empty list before the declaration is added to it.
+- The block restrictions leave the allowed blocks untouched, instead of failing, when the edited post has no post type.
+
+### Documentation
+
+- A [field list](docs/field-list.md) page shows every field with its Meta Box type.
 
 ## 3.1.0 - 2026-10-16
 
