@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From pollora/metabox 3.1 to 3.2
+
+3.2 requires PHP 8.3 or later. Composer does not install it on PHP 8.2: such a project stays on 3.1 until PHP is upgraded.
+
+The package API is unchanged. Some invalid input now throws a different exception, and the `getTable()` method of a class given as a custom table must return a string: see the [changelog](CHANGELOG.md#320---2026-11-27).
+
 ## From pollora/metabox 3.0 to 3.1
 
 Nothing needs to change: 3.1 adds the [attributes](docs/attributes.md). Classes declared with `make()` keep working, and both can be used in the same project.
@@ -176,7 +182,7 @@ Nothing else needs to change: 2.1 only adds methods and fields.
 
 ### 1. Check the prerequisites
 
-- PHP 8.2 or later.
+- PHP 8.3 or later (on PHP 8.2, Composer installs 3.1).
 - `amphibee/metabox-maker` 1.0.0, with its [upgrade notes](CHANGELOG.md#100---2026-10-07) applied. Projects still on `dev-main` or `0.9` must go through 1.0 first: it changes what Taxonomy fields display and how settings page icons are set.
 
 ### 2. Replace the package
